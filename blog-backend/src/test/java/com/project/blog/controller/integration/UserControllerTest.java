@@ -54,7 +54,7 @@ public class UserControllerTest {
 
     @Before
     public void init() {
-        User user = new User(1L, "Book Name", "Mkyong");
+        User user = new User(1L, "Username", "password");
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
     }
 
@@ -83,7 +83,6 @@ public class UserControllerTest {
     public void find_userId_OK() throws Exception {
 
         mockMvc.perform(get("/api/v1/user/1"))
-                /*.andDo(print())*/
                 .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
