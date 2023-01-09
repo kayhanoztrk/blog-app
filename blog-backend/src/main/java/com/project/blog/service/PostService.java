@@ -17,4 +17,5 @@ public interface PostService {
     List<Post> findAll();
     PostResponse findById(Long postId);
     PostResponse updatePostById(Long postId, PostUpdateRequest request);
+    List<PostResponse> findAllPostByUserId(Long userId);
 }

@@ -15,10 +15,14 @@ import com.project.blog.service.PostService;
 import com.project.blog.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Kayhan Öztürk
@@ -47,6 +51,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @CacheEvict(value="postList", allEntries = true)
     public PostResponse createPost(PostCreateRequest postCreateRequest) {
 
         UserResponse userResponse = userService.findById(postCreateRequest.getUserId());
@@ -63,18 +68,22 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Cacheable("postList")
     public List<Post> findAll() {
         return postRepository.findAll();
     }
 
     @Override
+    @Cacheable(value ="post", key="#postId")
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId + " not found!"));
+        logger.info("Coming data from db first time");
         return postDtoMapper.convertEntityToResponse(post);
     }
 
     @Override
+    @CachePut(value="post", key="#postId")
     public PostResponse updatePostById(Long postId,
                                        PostUpdateRequest request) {
         Post toPost = postRepository.findById(postId)
@@ -84,5 +93,12 @@ public class PostServiceImpl implements PostService {
         toPost.setText(request.getText());
         Post savedPost = postRepository.save(toPost);
         return postDtoMapper.convertEntityToResponse(savedPost);
+    }
+
+    @Override
+    public List<PostResponse> findAllPostByUserId(Long userId) {
+         return postRepository.findByUserId(userId).stream()
+                 .map((post) -> postDtoMapper.convertEntityToResponse(post))
+                 .collect(Collectors.toList());
     }
 }

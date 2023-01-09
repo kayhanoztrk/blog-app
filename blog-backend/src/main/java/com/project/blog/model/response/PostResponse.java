@@ -1,10 +1,13 @@
 package com.project.blog.model.response;
 
+import com.project.blog.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Date;
 
 /**
  * @author Kayhan Öztürk
@@ -19,4 +22,6 @@ public class PostResponse extends BaseResponse{
 
     private String title;
     private String text;
+    private Date createdAt;
+    private User user;
 }

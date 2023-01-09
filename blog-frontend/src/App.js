@@ -3,17 +3,26 @@ import './App.css';
 import Home from './components/Home/Home';
 import Post from './components/Post/Post';
 import Header from './components/Header/Header';
-import { BrowserRouter, Routes, Route, Redirect, Router,Switch } from "react-router-dom";
+import User from './components/User/User';
+import PostDetail from './components/Post/PostDetail';
+import PostList from './components/Post/PostList';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
+import { BrowserRouter,Route, Redirect, Switch, Routes } from "react-router-dom";
 
 function App() {
   return (
-    <div>
+    <div className="App">
     <BrowserRouter>
     <Header></Header>
-    <Switch>
-       <Route exact path="/home" component={Home}></Route>
-       <Route exact path="/post" component={Post}></Route>
-    </Switch>
+    <Routes>
+       <Route exact path="/" element={<Home />} />
+       <Route exact path="/user" element={<User />} />
+       <Route exact path="/post/:postId" element={<PostDetail />} />
+       <Route exact path="/user/:userId/posts" element={<PostList />} />
+       <Route exact path="/login" element={<Login />} />
+       <Route exact path="/register" element={<Register />} />
+    </Routes>
      </BrowserRouter>
      </div>
   );

@@ -34,6 +34,8 @@ public class PostDtoMapper {
         postResponse.setId(post.getId());
         postResponse.setTitle(post.getTitle());
         postResponse.setText(post.getText());
+        postResponse.setCreatedAt(post.getCreatedAt());
+        postResponse.setUser(post.getUser());
 
         return postResponse;
     }
@@ -43,6 +45,7 @@ public class PostDtoMapper {
         post.setId(postResponse.getId());
         post.setTitle(postResponse.getTitle());
         post.setText(postResponse.getText());
+        post.setCreatedAt(postResponse.getCreatedAt());
 
         return post;
     }

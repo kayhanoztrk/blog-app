@@ -7,6 +7,8 @@ import com.project.blog.model.response.PostResponse;
 import com.project.blog.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +53,15 @@ public class PostController {
     public ResponseEntity<PostResponse> updatePostById(@PathVariable Long postId, PostUpdateRequest postUpdateRequest) {
         PostResponse postResponse = postService.updatePostById(postId, postUpdateRequest);
         return ResponseEntity.ok(postResponse);
+    }
+
+    @GetMapping("/view")
+    public ResponseEntity<List<PostResponse>> findPostsByUserId(
+            @RequestParam(value = "userId") Long userId
+    ) {
+        List<PostResponse> postResponseList =
+                postService.findAllPostByUserId(userId);
+        return ResponseEntity.ok(postResponseList);
     }
 
 }

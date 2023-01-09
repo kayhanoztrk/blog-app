@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -16,6 +16,14 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material/Button';
 import { makeStyles } from '@material-ui/core/styles';
+import CommentIcon from '@mui/icons-material/Comment';
+import Container from '@material-ui/core/Container';
+import Comment from '../Comment/Comment';
+import CommentForm from '../Comment/CommentForm';
+import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { getPostById } from '../../service/post';
+import Author from '../Author/Author';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -60,38 +68,71 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function RecipeReviewCard() {
-  const [expanded, setExpanded] = React.useState(false);
-
-  const classes = useStyles();
+const PostDetail = () => {
   
-  const handleExpandClick = () => {
+  console.log('postDetail is loading!!');
+  const [expanded, setExpanded] = useState(false)
+  const [postDetail, setPostDetail] = useState({});
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const {postId} = useParams();
+  const classes = useStyles();
+
+  const getPostDetail = async () => {
+      console.log('postId', postId);
+        const postDetail = await getPostById(postId);
+        console.log('postDetail.user', postDetail.user);
+        setPostDetail(postDetail);
+        setIsLoaded(true);
+        console.log('getPostDetail is running');
+
+  }
+
+  const handleExpandClick = (e) => {
+    e.preventDefault();
     setExpanded(!expanded);
+    console.log('expanded', expanded);
   };
+
+  useEffect(() => {
+        getPostDetail();
+       //console.log('i fire once');
+  },[]);
 
   return (
     <div>
+        {console.log("rendering function")}
     <Card className={classes.root}>
       <CardContent>
         <Typography variant='h3'  gutterBottom>
-          A Simple MUI Card
-        </Typography>
-        <Typography variant="h4" component="div">
-         Heading
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          describes the heading
+          {postDetail.title}
         </Typography>
         <Typography variant="body1">
-          Card content
+        {postDetail.text}
           <br />
-          {'"describes the content"'}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Card Button</Button>
       </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <Container fixed className = {classes.container}>
+                      <Comment username="kayhan"/>
+                      <Comment username="selin"/>
+                      <CommentForm />
+                    </Container>
+                </Collapse>
+
+      <IconButton onClick={(e) => handleExpandClick}>
+      {expanded}
+          <CommentIcon></CommentIcon>
+      </IconButton>
     </Card>
+    {console.log('postDetailUser', postDetail.user)}
+    {
+       isLoaded ?   <Author user={postDetail.user} /> : ''
+    }
     </div>
   );
 }
+
+export default PostDetail;

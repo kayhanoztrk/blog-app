@@ -18,6 +18,7 @@ public class UserDtoMapper {
         userResponse.setId(user.getId());
         userResponse.setUsername(user.getUsername());
         userResponse.setPassword(user.getPassword());
+        userResponse.setBio(user.getBio());
         return userResponse;
     }
 
@@ -33,6 +34,7 @@ public class UserDtoMapper {
         user.setId(userResponse.getId());
         user.setUsername(userResponse.getUsername());
         user.setPassword(userResponse.getPassword());
+        user.setBio(userResponse.getBio());
         return user;
     }
 }

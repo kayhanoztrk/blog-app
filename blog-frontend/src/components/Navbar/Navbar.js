@@ -33,13 +33,6 @@ const useStyles = makeStyles((theme) => ({
 const Navbar = () => {
     const classes = useStyles();
     return(
-       /* <div>
-            <ul>
-           <li><Link to='/home'>Ana Sayfa</Link></li>
-            <li><Link to='/post'>Post Page</Link></li>
-            </ul>
-        </div>
-        */
         <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
@@ -52,7 +45,7 @@ const Navbar = () => {
             >
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <Link className={classes.link} to="/home">HomePage</Link>
+              <Link className={classes.link} to="/">HomePage</Link>
             </Typography>
             <Link className={classes.link} to="/home">User</Link>
           </Toolbar>

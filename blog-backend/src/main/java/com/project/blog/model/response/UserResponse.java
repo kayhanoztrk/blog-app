@@ -18,4 +18,6 @@ import lombok.experimental.SuperBuilder;
 public class UserResponse extends BaseResponse{
     private String username;
     private String password;
+
+    private String bio;
 }
