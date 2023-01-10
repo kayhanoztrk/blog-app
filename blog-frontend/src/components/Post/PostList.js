@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Post from "../Post/Post";
+import NotFound from "../NotFound/NotFound";
 import { getAllPostsByUserId } from "../../service/post";
 import { useParams } from "react-router-dom";
 
@@ -15,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const PostList = () => {
-
-    console.log('postList', 'denemee!!');
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
 
@@ -24,7 +23,6 @@ const PostList = () => {
 
   const getPostList = async () => {
     const postList = await getAllPostsByUserId(userId);
-    console.log("postList", postList);
     setPostList(postList);
     setIsLoaded(true);
   };
@@ -37,10 +35,14 @@ const PostList = () => {
   return (
       
     <div className={classes.container}>
+
       {
+          (postList.length > 0 && isLoaded) ?
           postList.map((post) => (
               <Post key={post.id} post={post} />
-              ))
+              )) :
+              <NotFound message="That author has not any post!"/>
+              
       }
     </div>
   );

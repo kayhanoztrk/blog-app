@@ -20,10 +20,11 @@ import CommentIcon from '@mui/icons-material/Comment';
 import Container from '@material-ui/core/Container';
 import Comment from '../Comment/Comment';
 import CommentForm from '../Comment/CommentForm';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { getPostById } from '../../service/post';
 import Author from '../Author/Author';
+import NotFound from "../NotFound/NotFound";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,17 +75,22 @@ const PostDetail = () => {
   const [expanded, setExpanded] = useState(false)
   const [postDetail, setPostDetail] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(null);
 
   const {postId} = useParams();
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const getPostDetail = async () => {
       console.log('postId', postId);
         const postDetail = await getPostById(postId);
+
         console.log('postDetail.user', postDetail.user);
         setPostDetail(postDetail);
         setIsLoaded(true);
-        console.log('getPostDetail is running');
+
+        if(postDetail.message != null)
+            setError(postDetail.message);
 
   }
 
@@ -96,12 +102,11 @@ const PostDetail = () => {
 
   useEffect(() => {
         getPostDetail();
-       //console.log('i fire once');
   },[]);
 
   return (
-    <div>
-        {console.log("rendering function")}
+            (isLoaded && error == null) ? 
+            <div>
     <Card className={classes.root}>
       <CardContent>
         <Typography variant='h3'  gutterBottom>
@@ -127,12 +132,10 @@ const PostDetail = () => {
           <CommentIcon></CommentIcon>
       </IconButton>
     </Card>
-    {console.log('postDetailUser', postDetail.user)}
-    {
-       isLoaded ?   <Author user={postDetail.user} /> : ''
-    }
+     <Author user={postDetail.user} />
     </div>
-  );
+ : <NotFound message={error} />
+);
 }
 
 export default PostDetail;

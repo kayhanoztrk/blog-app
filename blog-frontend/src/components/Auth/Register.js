@@ -3,7 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -22,6 +22,8 @@ const Register = () => {
     const [isRegistered, setIsRegistered] = useState(false);
     const theme = createTheme();
 
+    const navigate = useNavigate();
+
 
     const handleUsername = (val) => {
         setUsername(val);
@@ -38,7 +40,13 @@ const Register = () => {
         if(result != null){
             localStorage.setItem("userId", result.id);
             localStorage.setItem("username", username);
+            localStorage.setItem("currentUser", result.id);
+
+            setUsername("");
+            setPassword("");
             setIsRegistered(true);
+            navigate("/user/" + localStorage.getItem("currentUser"));
+            
         }
     }
 
@@ -76,6 +84,7 @@ const Register = () => {
               name="username"
               autoComplete="username"
               autoFocus
+              value={username}
               onChange={(e) => handleUsername(e.target.value)}
             />
             <TextField
@@ -87,6 +96,7 @@ const Register = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
               onChange={(e) => handlePassword(e.target.value)}
             />
             <Button

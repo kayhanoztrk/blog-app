@@ -33,3 +33,26 @@ export const getAllPostsByUserId = async (userId) => {
     }
   };
 
+
+export const savePost = async(post) => {
+    try{
+        const response = await fetch("/api/v1/post", {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: post.title,
+                text: post.text,
+                userId: post.userId
+            })
+        });
+
+        return response.json();
+    }catch(e){
+        console.log('e.message', e.message);
+        return [];
+    }
+}
+

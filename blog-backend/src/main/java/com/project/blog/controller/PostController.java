@@ -64,4 +64,12 @@ public class PostController {
         return ResponseEntity.ok(postResponseList);
     }
 
+
+    @GetMapping("/popular")
+    public ResponseEntity<PostResponse> getPopular(@PathVariable
+                                                   Long postId){
+        PostResponse response = postService.findTagNotExistsPostByPostId(postId);
+        return  ResponseEntity.ok(response);
+    }
+
 }

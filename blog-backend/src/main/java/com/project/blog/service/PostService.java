@@ -16,6 +16,7 @@ public interface PostService {
     PostResponse createPost(PostCreateRequest postCreateRequest);
     List<Post> findAll();
     PostResponse findById(Long postId);
+    PostResponse findTagNotExistsPostByPostId(Long postId);
     PostResponse updatePostById(Long postId, PostUpdateRequest request);
     List<PostResponse> findAllPostByUserId(Long userId);
 }

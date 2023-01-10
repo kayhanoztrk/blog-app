@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
     root:{
         flexGrow:1,
+        color: '#1976d2'
     },
     menuButton: {
         marginRight: theme.spacing(2),
@@ -32,9 +33,20 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
     const classes = useStyles();
+
+    const navigate = useNavigate();
+
+    const onClick = () => {
+      localStorage.removeItem("tokenKey");
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("userName");
+      localStorage.removeItem("refreshKey");
+      navigate("/");
+    }
+
     return(
         <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static"  style={{ background: '#2E3B55' }}>
           <Toolbar>
             <IconButton
               size="large"
@@ -47,7 +59,20 @@ const Navbar = () => {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link className={classes.link} to="/">HomePage</Link>
             </Typography>
-            <Link className={classes.link} to="/home">User</Link>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Link className={classes.link} to="/users">Users</Link>
+            </Typography>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              {localStorage.getItem("currentUser") == null ? 
+            <Link className={classes.link} to="/register">Login</Link>: 
+            <div><IconButton onClick={onClick}><LockOpen>
+            </LockOpen></IconButton>
+        <Link className={classes.link} to={{pathname : '/user/' + localStorage.getItem("currentUser")}}>Profile</Link>
+      </div>
+          }
+            </Typography>
+            
+
           </Toolbar>
         </AppBar>
       </Box>

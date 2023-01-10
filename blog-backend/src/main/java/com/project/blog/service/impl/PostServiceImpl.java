@@ -77,8 +77,14 @@ public class PostServiceImpl implements PostService {
     @Cacheable(value ="post", key="#postId")
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException(postId + " not found!"));
+                .orElseThrow(() -> new PostNotFoundException(postId + " post not found!"));
         logger.info("Coming data from db first time");
+        return postDtoMapper.convertEntityToResponse(post);
+    }
+
+    @Override
+    public PostResponse findTagNotExistsPostByPostId(Long postId) {
+        Post post = postRepository.findTagNotExistsPostByPostId(postId);
         return postDtoMapper.convertEntityToResponse(post);
     }
 
