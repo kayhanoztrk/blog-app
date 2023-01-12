@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,7 +53,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    //@CacheEvict(value = "postList", allEntries = true)
+    @CacheEvict(value = "postList", allEntries = true)
     public PostResponse createPost(PostCreateRequest postCreateRequest) {
 
         UserResponse userResponse = userService.findById(postCreateRequest.getUserId());
@@ -72,14 +71,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    //@Cacheable("postList")
+    @Cacheable("postList")
     public List<Post> findAll() {
         return postRepository.findAll();
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    //@Cacheable(value = "post", key = "#postId")
+    @Cacheable(value = "post", key = "#postId")
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId + " post not found!"));
@@ -94,7 +93,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    //@CachePut(value = "post", key = "#postId")
+    @CachePut(value = "post", key = "#postId")
     public PostResponse updatePostById(Long postId,
                                        PostUpdateRequest request) {
         Post toPost = postRepository.findById(postId)
@@ -117,7 +116,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    //@CacheEvict(value = "postList", allEntries = true)
+    @CacheEvict(value = "postList", allEntries = true)
     public void deleteByPostId(Long postId) {
         postRepository.deleteById(postId);
     }
