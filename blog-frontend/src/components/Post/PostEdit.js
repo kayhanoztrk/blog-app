@@ -27,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
 const PostEdit = (props) => {
   const [postDetail, setPostDetail] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [tags, setTags] = useState("");
   const [isPublished, setIsPublished] = useState(false);
 
   const theme = createTheme();
@@ -45,13 +45,17 @@ const PostEdit = (props) => {
   const getPostDetail = async () => {
     const postDetail = await getPostById(postId);
 
+    console.log("detailllll:", postDetail.isPublished);
+
     setPostDetail(postDetail);
+    setIsLoading(true);
     setTitle(postDetail.title);
     setDescription(postDetail.text);
-    setTags(postDetail.tagList);
     setIsPublished(postDetail.isPublished);
 
     if (postDetail.message != null) console.log("process has been succeded!");
+
+    console.log("isPublished:", postDetail.isPublished);
   };
 
   useEffect(() => {
@@ -66,11 +70,8 @@ const PostEdit = (props) => {
     setDescription(val);
   };
 
-  const handlePostTags = (val) => {
-    setTags(val);
-  };
   const handleIsPublished = (val) => {
-    setIsPublished(val);
+    setIsPublished(!isPublished);
   };
 
   const handleUpdatePostSubmit = async (e) => {
@@ -78,23 +79,19 @@ const PostEdit = (props) => {
 
     console.log("handleUpdatePostSubmit", "handleUpdatePostSubmit!");
 
-    const tagList = tags.split(",").map((tag) => ({
-      text: tag,
-    }));
-
     const post = {
       title: title,
       text: description,
-      tags: tagList,
+      isPublished: isPublished,
       userId: 1,
     };
 
+    console.log("postUpdate", post);
     const result = await updatePostById(postId, post);
 
     if (result != null) {
       setTitle("");
       setDescription("");
-      setTags("");
       setIsSaved(true);
       setTimeout(() => {
         navigate("/");
@@ -103,77 +100,73 @@ const PostEdit = (props) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      {isSaved ? <Alert severity="success">{POST_UPDATED_VALID}</Alert> : ""}
+    <>
+      {isLoading ? (
+        <ThemeProvider theme={theme}>
+          {isSaved ? (
+            <Alert severity="success">{POST_UPDATED_VALID}</Alert>
+          ) : (
+            ""
+          )}
 
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Update Post
-          </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Post Title"
-              name="title"
-              autoComplete="title"
-              autoFocus
-              value={title}
-              onChange={(e) => handlePostTitle(e.target.value)}
-            />
-            <TextField
-              className={classes.description}
-              margin="normal"
-              fullWidth
-              required
-              label="Post Description"
-              name="description"
-              autoFocus
-              value={description}
-              onChange={(e) => handlePostDescription(e.target.value)}
-            />
-            <TextField
-              className={classes.description}
-              margin="normal"
-              fullWidth
-              required
-              label="Post Tags"
-              name="tags"
-              autoFocus
-              value={JSON.stringify(tags)}
-              onChange={(e) => handlePostTags(e.target.value)}
-            />
-            (you can split your tags with using ',')
-            <FormControlLabel
-              control={
-                <Checkbox {...(postDetail.isPublished ? `checked` : "")} />
-              }
-              label="on production"
-              onChange={(e) => handleIsPublished(e.target.value)}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleUpdatePostSubmit}
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              Update Post
-            </Button>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+              <Typography component="h1" variant="h5">
+                Update Post
+              </Typography>
+              <Box component="form" noValidate sx={{ mt: 1 }}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Post Title"
+                  name="title"
+                  autoComplete="title"
+                  autoFocus
+                  value={title}
+                  onChange={(e) => handlePostTitle(e.target.value)}
+                />
+                <TextField
+                  className={classes.description}
+                  margin="normal"
+                  fullWidth
+                  required
+                  label="Post Description"
+                  name="description"
+                  autoFocus
+                  value={description}
+                  onChange={(e) => handlePostDescription(e.target.value)}
+                />
+                <FormControlLabel
+                  control={<Checkbox defaultChecked={postDetail.isPublished} />}
+                  label="on production"
+                  onChange={(e) => handleIsPublished(e.target.value)}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={handleUpdatePostSubmit}
+                >
+                  Update Post
+                </Button>
+              </Box>
+            </Box>
+          </Container>
+        </ThemeProvider>
+      ) : (
+        ""
+      )}
+    </>
   );
 };
 

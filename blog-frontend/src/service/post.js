@@ -99,7 +99,7 @@ export const updatePostById = async (postId, post) => {
       body: JSON.stringify({
         title: post.title,
         text: post.text,
-        tagList: post.tags,
+        isPublished: post.isPublished,
         userId: post.userId,
       }),
     });

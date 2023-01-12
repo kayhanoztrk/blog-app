@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Post from "../Post/Post";
 import { getAllPosts } from "../../service/post";
-import { useParams } from "react-router-dom";
+import NotFound from "../NotFound/NotFound";
+import { POST_NOT_FOUND_MESSAGE } from "../../constants/Messages";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -15,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
-  console.log("homeComponent is loading!");
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
 
@@ -27,7 +27,6 @@ const Home = () => {
   };
 
   useEffect(() => {
-    console.log("home useEffect etkisi!");
     getPostList();
   }, []);
 
@@ -36,10 +35,11 @@ const Home = () => {
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      {console.log("homepage is loading!!")}
-      {postList.map((post) => (
-        <Post key={post.id} post={post} />
-      ))}
+      {postList.length > 0 ? (
+        postList.map((post) => <Post key={post.id} post={post} />)
+      ) : (
+        <NotFound message={POST_NOT_FOUND_MESSAGE} />
+      )}
     </div>
   );
 };
