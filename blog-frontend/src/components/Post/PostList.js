@@ -19,7 +19,7 @@ const PostList = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
 
-  const {userId} = useParams();
+  const { userId } = useParams();
 
   const getPostList = async () => {
     const postList = await getAllPostsByUserId(userId);
@@ -29,21 +29,16 @@ const PostList = () => {
 
   useEffect(() => {
     getPostList();
-  },[]);
+  }, []);
 
   const classes = useStyles();
   return (
-      
     <div className={classes.container}>
-
-      {
-          (postList.length > 0 && isLoaded) ?
-          postList.map((post) => (
-              <Post key={post.id} post={post} />
-              )) :
-              <NotFound message="That author has not any post!"/>
-              
-      }
+      {postList.length > 0 && isLoaded ? (
+        postList.map((post) => <Post key={post.id} post={post} />)
+      ) : (
+        <NotFound message="That author has not any post!" />
+      )}
     </div>
   );
 };

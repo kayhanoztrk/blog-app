@@ -12,6 +12,7 @@ import UserList from './components/User/UserList';
 import NotFound from './components/NotFound/NotFound';
 import { BrowserRouter,Route, Redirect, Switch, Routes } from "react-router-dom";
 import PostForm from './components/Post/PostForm';
+import ProfileSettings from './components/Profile/ProfileSettings';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
        <Route exact path="/post/create" element={<PostForm />} />
        <Route exact path="/login" element={<Login />} />
        <Route exact path="/register" element={<Register />} />
+       <Route exact path="/settings" element={<ProfileSettings />} />
        <Route exact path="/notfound" element={<NotFound />} />
     </Routes>
      </BrowserRouter>

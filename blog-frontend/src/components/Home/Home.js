@@ -15,11 +15,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Home = () => {
-
-  console.log('homeComponent is loading!');
+  console.log("homeComponent is loading!");
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
-
 
   const getPostList = async () => {
     const postList = await getAllPosts();
@@ -29,26 +27,19 @@ const Home = () => {
   };
 
   useEffect(() => {
-    
-    console.log('home useEffect etkisi!');
+    console.log("home useEffect etkisi!");
     getPostList();
-
   }, []);
 
   const test = "deneme";
 
   const classes = useStyles();
   return (
-      
     <div className={classes.container}>
-      {
-          console.log('homepage is loading!!')
-      }
-      {
-          postList.map((post) => (
-              <Post key={post.id} post={post} />
-              ))
-      }
+      {console.log("homepage is loading!!")}
+      {postList.map((post) => (
+        <Post key={post.id} post={post} />
+      ))}
     </div>
   );
 };
