@@ -97,6 +97,9 @@ public class PostServiceImpl implements PostService {
 
         toPost.setTitle(request.getTitle());
         toPost.setText(request.getText());
+        toPost.setTags(request.getTagList());
+        toPost.setIsPublished(request.getIsPublished());
+
         Post savedPost = postRepository.save(toPost);
         return postDtoMapper.convertEntityToResponse(savedPost);
     }
