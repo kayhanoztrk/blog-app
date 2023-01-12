@@ -18,6 +18,7 @@ import { POST_DELETED_VALID } from "../../constants/Messages";
 import PostEdit from "./PostEdit";
 import { CardActions } from "@mui/material";
 import { Button } from "@mui/material";
+import PublishIcon from "@mui/icons-material/Publish";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -43,6 +44,7 @@ const PostCard = (props) => {
 
   const [isDeleted, setIsDeleted] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [isPublished, setIsPublished] = useState(!postInfo.isPublished);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -56,6 +58,10 @@ const PostCard = (props) => {
       setIsDeleted(true);
       setTimeout(() => refreshPostList(), 1000);
     }
+  };
+
+  const handlePublish = () => {
+    console.log("handlePublishh!!");
   };
 
   return (
@@ -86,6 +92,21 @@ const PostCard = (props) => {
                 >
                   {theme.direction === "rtl" ? <DeleteIcon /> : <DeleteIcon />}
                 </IconButton>
+                {!isPublished ? (
+                  <IconButton
+                    aria-label="next"
+                    style={{ justifyContent: "flex-end" }}
+                    onClick={handlePublish}
+                  >
+                    {theme.direction === "rtl" ? (
+                      <PublishIcon />
+                    ) : (
+                      <PublishIcon />
+                    )}
+                  </IconButton>
+                ) : (
+                  ""
+                )}
               </Box>
             ) : (
               ""
