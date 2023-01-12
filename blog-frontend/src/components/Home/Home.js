@@ -21,7 +21,6 @@ const Home = () => {
 
   const getPostList = async () => {
     const postList = await getAllPosts();
-    console.log("postList", postList);
     setPostList(postList);
     setIsLoaded(true);
   };
@@ -29,8 +28,6 @@ const Home = () => {
   useEffect(() => {
     getPostList();
   }, []);
-
-  const test = "deneme";
 
   const classes = useStyles();
   return (

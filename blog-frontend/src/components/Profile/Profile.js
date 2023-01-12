@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   },
 });
 const Profile = (props) => {
-  console.log(props);
+  console.log("props", props);
   const { id: userId, username, password, bio } = props;
   //const [selectedValue, setSelectedValue] = useState(avatarId);
 
@@ -41,9 +41,6 @@ const Profile = (props) => {
   const handleClose = () => {
     setOpen(false);
     //saveAvatar(selectedValue);
-  };
-  const handleChange = (event) => {
-    //setSelectedValue(event.target.value);
   };
 
   return (
@@ -58,8 +55,7 @@ const Profile = (props) => {
           </Typography>
         </CardContent>
 
-        {
-          //localStorage.getItem("currentUser") == userId ?
+        {localStorage.getItem("currentUser") == userId ? (
           <Box sx={{ display: "flex" }}>
             <Link to="/settings">
               <SettingsIcon />
@@ -75,7 +71,9 @@ const Profile = (props) => {
               <Link to="/post/create"> Add New Post</Link>
             </Button>
           </Box>
-        }
+        ) : (
+          ""
+        )}
       </Card>
       <PostTab />
     </div>

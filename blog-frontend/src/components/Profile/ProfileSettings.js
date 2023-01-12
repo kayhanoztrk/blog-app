@@ -99,7 +99,6 @@ const ProfileSettings = () => {
     setUsername(userDetail.username);
     setUserBio(userDetail.bio);
     setIsLoaded(true);
-    console.log("userDetail.username", username);
   };
 
   useEffect(() => {
@@ -139,6 +138,7 @@ const ProfileSettings = () => {
       setUsername("");
       setUserBio("");
       setMessage(USER_UPDATE_VALID);
+      setTimeout(() => navigate(-1), 2000);
     }
   };
 

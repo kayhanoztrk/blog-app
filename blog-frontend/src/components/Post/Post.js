@@ -83,14 +83,8 @@ const Post = (props) => {
           <Typography variant="h3" gutterBottom>
             {title}
           </Typography>
-          <Typography variant="h4" component="div">
-            Heading
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            describes the heading
-          </Typography>
           <Typography variant="body1">
-            {text}
+            {text.substring(0, 20) + "..."}
             <br />
           </Typography>
         </CardContent>
@@ -101,8 +95,8 @@ const Post = (props) => {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <Container fixed className={classes.container}>
-            <Comment username="kayhan" />
-            <Comment username="selin" />
+            <Comment username="TEST1" />
+            <Comment username="TEST2" />
             <CommentForm />
           </Container>
         </Collapse>

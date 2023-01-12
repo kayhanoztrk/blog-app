@@ -11,7 +11,6 @@ const useStyles = makeStyles({
 });
 
 const User = () => {
-  console.log("userbilgileri");
   const { userId } = useParams();
   const classes = useStyles();
   const [user, setUser] = useState();
@@ -30,7 +29,11 @@ const User = () => {
 
   return (
     <div className={classes.root}>
-      {isLoaded ? <Profile username={user.username} /> : ""}
+      {isLoaded ? (
+        <Profile username={user.username} id={userId} bio={user.bio} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
