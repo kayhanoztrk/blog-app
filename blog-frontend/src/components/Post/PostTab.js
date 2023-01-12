@@ -77,7 +77,6 @@ const PostTab = () => {
   useEffect(() => {
     findPostPublishedList();
     findPostDraftList();
-    console.log("postListDetails is coming!!");
     console.log("postPublishedList", postPublishedList);
   }, []);
 
