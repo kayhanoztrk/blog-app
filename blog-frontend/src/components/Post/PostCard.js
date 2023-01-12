@@ -18,6 +18,7 @@ import { deletePostById } from "../../service/post";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import { POST_DELETED_VALID } from "../../constants/Messages";
+import PostEdit from "./PostEdit";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,9 +43,11 @@ const PostCard = (props) => {
   const { postInfo, refreshPostList } = props;
 
   const [isDeleted, setIsDeleted] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   const handleEdit = () => {
     console.log("edit icon is clicked!");
+    setEditMode(true);
   };
 
   const handleDelete = async () => {
@@ -60,33 +63,37 @@ const PostCard = (props) => {
 
   return (
     <>
-      <Card sx={{ display: "flex" }}>
-        {isDeleted ? (
-          <Alert severity="success">{POST_DELETED_VALID}</Alert>
-        ) : (
-          ""
-        )}
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography component="div">{postInfo.title}</Typography>
-            <Typography component="div" className={classes.text}>
-              {postInfo.text}
-            </Typography>
-          </CardContent>
-          <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-            <IconButton aria-label="previous" onClick={handleEdit}>
-              {theme.direction === "rtl" ? <EditIcon /> : <EditIcon />}
-            </IconButton>
-            <IconButton
-              aria-label="next"
-              style={{ justifyContent: "flex-end" }}
-              onClick={handleDelete}
-            >
-              {theme.direction === "rtl" ? <DeleteIcon /> : <DeleteIcon />}
-            </IconButton>
+      {!editMode ? (
+        <Card sx={{ display: "flex" }}>
+          {isDeleted ? (
+            <Alert severity="success">{POST_DELETED_VALID}</Alert>
+          ) : (
+            ""
+          )}
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <CardContent sx={{ flex: "1 0 auto" }}>
+              <Typography component="div">{postInfo.title}</Typography>
+              <Typography component="div" className={classes.text}>
+                {postInfo.text}
+              </Typography>
+            </CardContent>
+            <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+              <IconButton aria-label="previous" onClick={handleEdit}>
+                {theme.direction === "rtl" ? <EditIcon /> : <EditIcon />}
+              </IconButton>
+              <IconButton
+                aria-label="next"
+                style={{ justifyContent: "flex-end" }}
+                onClick={handleDelete}
+              >
+                {theme.direction === "rtl" ? <DeleteIcon /> : <DeleteIcon />}
+              </IconButton>
+            </Box>
           </Box>
-        </Box>
-      </Card>
+        </Card>
+      ) : (
+        <PostEdit postId={postInfo.id} />
+      )}
     </>
   );
 };
