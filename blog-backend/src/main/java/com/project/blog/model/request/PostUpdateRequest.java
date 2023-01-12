@@ -12,4 +12,5 @@ public class PostUpdateRequest {
 
     private String title;
     private String text;
+    private Boolean isPublished;
 }

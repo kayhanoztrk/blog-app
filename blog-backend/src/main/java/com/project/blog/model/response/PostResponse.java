@@ -24,4 +24,5 @@ public class PostResponse extends BaseResponse{
     private String text;
     private Date createdAt;
     private User user;
+    private Boolean isPublished;
 }

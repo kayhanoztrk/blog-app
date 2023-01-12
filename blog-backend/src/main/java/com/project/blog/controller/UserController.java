@@ -1,6 +1,8 @@
 package com.project.blog.controller;
 
+import com.project.blog.entity.User;
 import com.project.blog.model.request.UserCreateRequest;
+import com.project.blog.model.request.UserUpdateRequest;
 import com.project.blog.model.response.UserResponse;
 import com.project.blog.service.UserService;
 import org.slf4j.Logger;
@@ -43,5 +45,12 @@ public class UserController {
         return userService.createUser(userCreateRequest);
     }
 
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId,
+                                                   @RequestBody UserUpdateRequest updateRequest) {
+        UserResponse response = userService.updateByUserId(userId, updateRequest);
+        return ResponseEntity.ok(response);
+    }
 
 }

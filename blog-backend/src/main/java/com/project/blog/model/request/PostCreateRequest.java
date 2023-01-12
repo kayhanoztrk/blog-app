@@ -29,4 +29,6 @@ public class PostCreateRequest {
     private Long userId;
 
     private List<Tag> tagList;
+
+    private Boolean isPublished=false;
 }

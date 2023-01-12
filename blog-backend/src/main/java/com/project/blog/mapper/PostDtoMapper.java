@@ -25,7 +25,7 @@ public class PostDtoMapper {
         post.setText(postCreateRequest.getText());
         post.setUser(user);
         post.setTags(postCreateRequest.getTagList());
-
+        post.setIsPublished(postCreateRequest.getIsPublished());
         return post;
     }
 
@@ -36,6 +36,7 @@ public class PostDtoMapper {
         postResponse.setText(post.getText());
         postResponse.setCreatedAt(post.getCreatedAt());
         postResponse.setUser(post.getUser());
+        postResponse.setIsPublished(post.getIsPublished());
 
         return postResponse;
     }

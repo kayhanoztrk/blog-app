@@ -19,4 +19,7 @@ public interface PostService {
     PostResponse findTagNotExistsPostByPostId(Long postId);
     PostResponse updatePostById(Long postId, PostUpdateRequest request);
     List<PostResponse> findAllPostByUserId(Long userId);
+    void deleteByPostId(Long postId);
+
+    List<PostResponse> findAllDraftOrPublishedPost(boolean isPublished);
 }

@@ -4,6 +4,7 @@ import com.project.blog.entity.User;
 import com.project.blog.exception.UserNotFoundException;
 import com.project.blog.mapper.UserDtoMapper;
 import com.project.blog.model.request.UserCreateRequest;
+import com.project.blog.model.request.UserUpdateRequest;
 import com.project.blog.model.response.UserResponse;
 import com.project.blog.repository.UserRepository;
 import com.project.blog.service.UserService;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponse> findAll() {
         return userRepository.findAll().stream()
-                .map(user ->userDtoMapper.convertEntityToResp(user))
+                .map(user -> userDtoMapper.convertEntityToResp(user))
                 .collect(Collectors.toList());
     }
 
@@ -52,5 +53,17 @@ public class UserServiceImpl implements UserService {
         User user = userDtoMapper.convertToEntity(userCreateRequest);
         User savedUser = userRepository.save(user);
         return userDtoMapper.convertEntityToResp(savedUser);
+    }
+
+    @Override
+    public UserResponse updateByUserId(Long userId, UserUpdateRequest updateRequest) {
+        User toUser = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId + " not found user!"));
+
+        toUser.setUsername(updateRequest.getUsername());
+        toUser.setBio(updateRequest.getBio());
+
+        User user = userRepository.save(toUser);
+        return userDtoMapper.convertEntityToResp(user);
     }
 }

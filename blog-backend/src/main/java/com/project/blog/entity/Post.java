@@ -38,12 +38,15 @@ public class Post implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "post_tag", joinColumns =
     @JoinColumn(name = "post_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
     @JsonIgnore
     private List<Tag> tags;
+
+    @Column(name = "is_published", nullable = false)
+    private Boolean isPublished = false;
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
 }

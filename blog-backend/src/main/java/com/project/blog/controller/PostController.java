@@ -50,26 +50,40 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<PostResponse> updatePostById(@PathVariable Long postId, PostUpdateRequest postUpdateRequest) {
+    public ResponseEntity<PostResponse> updatePostById(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
         PostResponse postResponse = postService.updatePostById(postId, postUpdateRequest);
         return ResponseEntity.ok(postResponse);
     }
 
     @GetMapping("/view")
-    public ResponseEntity<List<PostResponse>> findPostsByUserId(
-            @RequestParam(value = "userId") Long userId
-    ) {
-        List<PostResponse> postResponseList =
-                postService.findAllPostByUserId(userId);
+    public ResponseEntity<List<PostResponse>> findPostsByUserId(@RequestParam(value = "userId") Long userId) {
+        List<PostResponse> postResponseList = postService.findAllPostByUserId(userId);
         return ResponseEntity.ok(postResponseList);
     }
 
 
     @GetMapping("/popular")
-    public ResponseEntity<PostResponse> getPopular(@PathVariable
-                                                   Long postId){
+    public ResponseEntity<PostResponse> getPopular(@PathVariable Long postId) {
         PostResponse response = postService.findTagNotExistsPostByPostId(postId);
-        return  ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/draft")
+    public ResponseEntity<List<PostResponse>> findAllDraftPost() {
+        List<PostResponse> postResponseList = postService.findAllDraftOrPublishedPost(false);
+        return ResponseEntity.ok(postResponseList);
+    }
+
+    @GetMapping("/published")
+    public ResponseEntity<List<PostResponse>> findAllPublishedPost() {
+        List<PostResponse> postResponseList = postService.findAllDraftOrPublishedPost(true);
+        return ResponseEntity.ok(postResponseList);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<String> deleteByPostId(@PathVariable Long postId) {
+        postService.deleteByPostId(postId);
+        return ResponseEntity.ok("Deleted post with id info");
     }
 
 }
