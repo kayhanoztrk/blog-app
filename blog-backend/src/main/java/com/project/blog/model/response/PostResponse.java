@@ -1,5 +1,6 @@
 package com.project.blog.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.blog.entity.Tag;
 import com.project.blog.entity.User;
 import lombok.AllArgsConstructor;

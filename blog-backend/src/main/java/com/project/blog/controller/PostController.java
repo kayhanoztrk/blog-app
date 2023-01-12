@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,8 +51,8 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<PostResponse> updatePostById(@PathVariable Long postId, @RequestBody PostUpdateRequest postUpdateRequest) {
-        PostResponse postResponse = postService.updatePostById(postId, postUpdateRequest);
+    public ResponseEntity<PostResponse> updatePostById(@PathVariable Long postId, @RequestBody PostUpdateRequest request) {
+        PostResponse postResponse = postService.updatePostById(postId, request);
         return ResponseEntity.ok(postResponse);
     }
 
