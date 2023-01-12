@@ -43,8 +43,6 @@ const Register = () => {
       localStorage.setItem("username", username);
       localStorage.setItem("currentUser", result.id);
 
-      console.log("currentUser:", localStorage.getItem("currentUser"));
-
       setUsername("");
       setPassword("");
       setIsRegistered(true);

@@ -119,7 +119,6 @@ const ProfileSettings = () => {
   const handleExpandClick = (e) => {
     e.preventDefault();
     setExpanded(!expanded);
-    console.log("expanded", expanded);
   };
 
   const handleSaveUserInfo = async (e) => {

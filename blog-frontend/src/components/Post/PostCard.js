@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Author from "../Author/Author";
 import { getAllPosts } from "../../service/post";
@@ -7,18 +8,16 @@ import { CardContent } from "@material-ui/core";
 import { Card } from "@material-ui/core";
 import { Typography } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { useTheme } from "@mui/material/styles";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import EditIcon from "@mui/icons-material/Edit";
-import CardMedia from "@mui/material/CardMedia";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deletePostById } from "../../service/post";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
 import { POST_DELETED_VALID } from "../../constants/Messages";
 import PostEdit from "./PostEdit";
+import { CardActions } from "@mui/material";
+import { Button } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -39,20 +38,18 @@ const PostCard = (props) => {
 
   const classes = useStyles();
   const navigator = useNavigate();
-  console.log("props", props);
-  const { postInfo, refreshPostList } = props;
+
+  const { postInfo, refreshPostList, isOwner } = props;
 
   const [isDeleted, setIsDeleted] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
   const handleEdit = () => {
-    console.log("edit icon is clicked!");
     setEditMode(true);
   };
 
   const handleDelete = async () => {
     const postId = postInfo.id;
-    console.log("postId", postId);
     const response = await deletePostById(postId);
 
     if (response != null) {
@@ -77,18 +74,29 @@ const PostCard = (props) => {
                 {postInfo.text}
               </Typography>
             </CardContent>
-            <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-              <IconButton aria-label="previous" onClick={handleEdit}>
-                {theme.direction === "rtl" ? <EditIcon /> : <EditIcon />}
-              </IconButton>
-              <IconButton
-                aria-label="next"
-                style={{ justifyContent: "flex-end" }}
-                onClick={handleDelete}
-              >
-                {theme.direction === "rtl" ? <DeleteIcon /> : <DeleteIcon />}
-              </IconButton>
-            </Box>
+            {isOwner ? (
+              <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+                <IconButton aria-label="previous" onClick={handleEdit}>
+                  {theme.direction === "rtl" ? <EditIcon /> : <EditIcon />}
+                </IconButton>
+                <IconButton
+                  aria-label="next"
+                  style={{ justifyContent: "flex-end" }}
+                  onClick={handleDelete}
+                >
+                  {theme.direction === "rtl" ? <DeleteIcon /> : <DeleteIcon />}
+                </IconButton>
+              </Box>
+            ) : (
+              ""
+            )}
+            <CardActions>
+              <Button size="small">
+                <Link to={{ pathname: "/post/" + postInfo.id }}>
+                  Read More..{" "}
+                </Link>
+              </Button>
+            </CardActions>
           </Box>
         </Card>
       ) : (

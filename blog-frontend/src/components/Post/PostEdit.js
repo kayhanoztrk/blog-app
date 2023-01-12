@@ -52,10 +52,6 @@ const PostEdit = (props) => {
     setTitle(postDetail.title);
     setDescription(postDetail.text);
     setIsPublished(postDetail.isPublished);
-
-    if (postDetail.message != null) console.log("process has been succeded!");
-
-    console.log("isPublished:", postDetail.isPublished);
   };
 
   useEffect(() => {
@@ -76,8 +72,6 @@ const PostEdit = (props) => {
 
   const handleUpdatePostSubmit = async (e) => {
     e.preventDefault();
-
-    console.log("handleUpdatePostSubmit", "handleUpdatePostSubmit!");
 
     const post = {
       title: title,

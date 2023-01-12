@@ -59,13 +59,11 @@ const PostForm = () => {
       text: tag,
     }));
 
-    console.log("tagListDetail", tagList);
-
     const post = {
       title: title,
       text: description,
       tags: tagList,
-      userId: 1,
+      userId: localStorage.getItem("currentUser"),
     };
 
     const result = await savePost(post);

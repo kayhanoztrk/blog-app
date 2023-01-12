@@ -83,7 +83,6 @@ const PostDetail = () => {
     console.log("postId", postId);
     const postDetail = await getPostById(postId);
 
-    console.log("postDetail.user", postDetail.user);
     setPostDetail(postDetail);
     setIsLoaded(true);
 
@@ -93,7 +92,6 @@ const PostDetail = () => {
   const handleExpandClick = (e) => {
     e.preventDefault();
     setExpanded(!expanded);
-    console.log("expanded", expanded);
   };
 
   useEffect(() => {

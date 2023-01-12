@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -6,6 +7,8 @@ import Box from "@mui/material/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import PostList from "./PostList";
 import PostCard from "./PostCard";
+import { CardActions } from "@mui/material";
+import { Button } from "@mui/material";
 import { getPostPublishedList, getPostDraftList } from "../../service/post";
 
 interface TabPanelProps {
@@ -55,21 +58,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PostTab = () => {
+const PostTab = (props) => {
   const [value, setValue] = React.useState(0);
   const [postPublishedList, setPostPublishedList] = useState([]);
   const [postDraftList, setPostDraftList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const { isOwner } = props;
+
   const findPostPublishedList = async () => {
     const postList = await getPostPublishedList();
-    console.log("postList", postList);
     setPostPublishedList(postList);
     setIsLoaded(true);
   };
   const findPostDraftList = async () => {
     const postList = await getPostDraftList();
-    console.log("postDraftList", postList);
     setPostDraftList(postList);
     setIsLoaded(true);
   };
@@ -77,7 +80,6 @@ const PostTab = () => {
   useEffect(() => {
     findPostPublishedList();
     findPostDraftList();
-    console.log("postPublishedList", postPublishedList);
   }, []);
 
   const classes = useStyles();
@@ -95,31 +97,35 @@ const PostTab = () => {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Drafts" {...a11yProps(0)} />
-            <Tab label="Published Contents" {...a11yProps(1)} />
+            <Tab label="Published Contents" {...a11yProps(0)} />
+            <Tab label="Drafts" {...a11yProps(1)} />
           </Tabs>
         </Box>
+
         <TabPanel value={value} index={0} component={"div"}>
-          {postDraftList.map((post) => (
-            <PostCard
-              key={post.id}
-              postInfo={post}
-              refreshPostList={findPostDraftList}
-            />
-          ))}
-        </TabPanel>
-        <TabPanel value={value} index={1} component={"div"}>
           {postPublishedList.map((post) => (
             <PostCard
               key={post.id}
               postInfo={post}
               refreshPostList={findPostPublishedList}
+              isOwner={isOwner}
             />
           ))}
         </TabPanel>
-        <TabPanel value={value} index={2} component={"div"}>
-          Item Three
-        </TabPanel>
+        {isOwner ? (
+          <TabPanel value={value} index={1} component={"div"}>
+            {postDraftList.map((post) => (
+              <PostCard
+                key={post.id}
+                postInfo={post}
+                refreshPostList={findPostDraftList}
+                isOwner={isOwner}
+              />
+            ))}
+          </TabPanel>
+        ) : (
+          ""
+        )}
       </Box>
     </div>
   );

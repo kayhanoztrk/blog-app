@@ -30,19 +30,9 @@ const useStyles = makeStyles({
   },
 });
 const Profile = (props) => {
-  console.log("props", props);
-  const { id: userId, username, password, bio } = props;
-  //const [selectedValue, setSelectedValue] = useState(avatarId);
+  const { id: userId, username, bio, isOwner } = props;
 
   const classes = useStyles();
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => {
-    setOpen(false);
-    //saveAvatar(selectedValue);
-  };
-
   return (
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
       <Card className={classes.root}>
@@ -55,7 +45,7 @@ const Profile = (props) => {
           </Typography>
         </CardContent>
 
-        {localStorage.getItem("currentUser") == userId ? (
+        {isOwner ? (
           <Box sx={{ display: "flex" }}>
             <Link to="/settings">
               <SettingsIcon />
@@ -75,7 +65,7 @@ const Profile = (props) => {
           ""
         )}
       </Card>
-      <PostTab />
+      <PostTab isOwner={isOwner} />
     </div>
   );
 };

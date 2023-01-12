@@ -73,7 +73,6 @@ const Post = (props) => {
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-    console.log("expanded", expanded);
   };
 
   return (

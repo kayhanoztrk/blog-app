@@ -13,24 +13,31 @@ const useStyles = makeStyles({
 const User = () => {
   const { userId } = useParams();
   const classes = useStyles();
+
   const [user, setUser] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
   const getUser = async () => {
     const userInfo = await getUserById(userId);
-    console.log("USERINFO", userInfo);
     setUser(userInfo);
     setIsLoaded(true);
   };
 
   useEffect(() => {
     getUser();
+    setIsOwner(localStorage.getItem("currentUser") == userId);
   }, []);
 
   return (
     <div className={classes.root}>
       {isLoaded ? (
-        <Profile username={user.username} id={userId} bio={user.bio} />
+        <Profile
+          username={user.username}
+          id={userId}
+          bio={user.bio}
+          isOwner={isOwner}
+        />
       ) : (
         ""
       )}

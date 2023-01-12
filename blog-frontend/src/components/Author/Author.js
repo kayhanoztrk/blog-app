@@ -21,12 +21,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Author = (props) => {
   const classes = useStyles();
-  console.log("author props", props.user);
 
   const {
     user: { id, username, password, bio },
   } = props;
-  console.log(username);
 
   return (
     <Card className={classes.card}>
