@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Author from "../Author/Author";
-import { getAllPosts } from "../../service/post";
+import { getAllPosts, updatePostById } from "../../service/post";
 import { Box } from "@material-ui/core";
 import { CardContent } from "@material-ui/core";
 import { Card } from "@material-ui/core";
@@ -40,11 +40,13 @@ const PostCard = (props) => {
   const classes = useStyles();
   const navigator = useNavigate();
 
-  const { postInfo, refreshPostList, isOwner } = props;
+  const { postInfo, refreshPostPublishedList, refreshPostDraftList, isOwner } =
+    props;
 
   const [isDeleted, setIsDeleted] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [isPublished, setIsPublished] = useState(!postInfo.isPublished);
+  const [isPublished, setIsPublished] = useState(postInfo.isPublished);
+  const [savePublished, setSavePublished] = useState(false);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -56,12 +58,32 @@ const PostCard = (props) => {
 
     if (response != null) {
       setIsDeleted(true);
-      setTimeout(() => refreshPostList(), 1000);
+      setTimeout(() => {
+        refreshPostPublishedList();
+        refreshPostDraftList();
+      }, 1000);
     }
   };
 
-  const handlePublish = () => {
-    console.log("handlePublishh!!");
+  const handlePublish = async () => {
+    const postId = postInfo.id;
+
+    const post = {
+      title: postInfo.title,
+      text: postInfo.text,
+      userId: localStorage.getItem("currentUser"),
+      isPublished: true,
+    };
+
+    const response = await updatePostById(postId, post);
+
+    if (response != null) {
+      setSavePublished(true);
+      setTimeout(() => {
+        refreshPostPublishedList();
+        refreshPostDraftList();
+      }, 1000);
+    }
   };
 
   return (

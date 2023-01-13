@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -65,14 +65,17 @@ const PostTab = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { isOwner } = props;
-
+  const { userId } = useParams();
   const findPostPublishedList = async () => {
-    const postList = await getPostPublishedList();
+    const postList = await getPostPublishedList(userId);
     setPostPublishedList(postList);
+
+    console.log("PUBLISHEDLIST", postList);
+    console.log("userId", userId);
     setIsLoaded(true);
   };
   const findPostDraftList = async () => {
-    const postList = await getPostDraftList();
+    const postList = await getPostDraftList(userId);
     setPostDraftList(postList);
     setIsLoaded(true);
   };
@@ -107,7 +110,8 @@ const PostTab = (props) => {
             <PostCard
               key={post.id}
               postInfo={post}
-              refreshPostList={findPostPublishedList}
+              refreshPostPublishedList={findPostPublishedList}
+              refreshPostDraftList={findPostDraftList}
               isOwner={isOwner}
             />
           ))}
@@ -118,7 +122,8 @@ const PostTab = (props) => {
               <PostCard
                 key={post.id}
                 postInfo={post}
-                refreshPostList={findPostDraftList}
+                refreshPostPublishedList={findPostPublishedList}
+                refreshPostDraftList={findPostDraftList}
                 isOwner={isOwner}
               />
             ))}

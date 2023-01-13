@@ -1,19 +1,4 @@
-export const getAllPosts = async () => {
-  try {
-    const response = await fetch("/api/v1/post", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    return response.json();
-  } catch (e) {
-    console.log("errror", e.message);
-    return [];
-  }
-};
-
-export const getPostPublishedList = async () => {
+export const getAllPostsPublished = async () => {
   try {
     const response = await fetch("/api/v1/post/published", {
       headers: {
@@ -28,9 +13,24 @@ export const getPostPublishedList = async () => {
   }
 };
 
-export const getPostDraftList = async () => {
+export const getPostPublishedList = async (userId) => {
   try {
-    const response = await fetch("/api/v1/post/draft", {
+    const response = await fetch("/api/v1/post/published/user/" + userId, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return response.json();
+  } catch (e) {
+    console.log("errror", e.message);
+    return [];
+  }
+};
+
+export const getPostDraftList = async (userId) => {
+  try {
+    const response = await fetch("/api/v1/post/draft/user/" + userId, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -79,7 +79,8 @@ export const savePost = async (post) => {
         userId: post.userId,
       }),
     });
-
+    console.log("postSaved", post);
+    //console.log("donenHata:", JSON.stringify(response.json()));
     return response.json();
   } catch (e) {
     console.log("e.message", e.message);

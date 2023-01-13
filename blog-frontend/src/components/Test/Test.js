@@ -63,24 +63,25 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const Post = (props) => {
+const Test = (props) => {
   const [expanded, setExpanded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const isInitialMount = useRef(true);
 
-  const { id: postId, title, text, tagList } = props.post;
-  const { isHome } = props;
-
+  const { id: postId, title, text } = props.post;
   const commentText = {
-    userId: localStorage.getItem("currentUser"),
+    userId: 1,
+    username: "boskefm",
+    text: "commentText!!",
     postId: postId,
   };
 
   const classes = useStyles();
 
   const handleExpandClick = () => {
+    console.log("expandeddd!!");
     setExpanded(!expanded);
     getAllComments();
   };
@@ -94,6 +95,7 @@ const Post = (props) => {
     setCommentList(commentDetailList);
     setIsLoaded(true);
     setRefresh(false);
+    console.log("bakalım gelecek mi!!!");
   };
 
   useEffect(() => {
@@ -116,13 +118,9 @@ const Post = (props) => {
           </Typography>
         </CardContent>
         <CardActions>
-          {isHome ? (
-            <Button size="small">
-              <Link to={{ pathname: "/post/" + postId }}>Read More.. </Link>
-            </Button>
-          ) : (
-            ""
-          )}
+          <Button size="small">
+            <Link to={{ pathname: "/post/" + postId }}>Read More.. </Link>
+          </Button>
 
           <IconButton
             className={clsx(classes.expand, {
@@ -135,9 +133,6 @@ const Post = (props) => {
             {expanded}
             <CommentIcon />
           </IconButton>
-          {tagList.length > 0 && !isHome
-            ? tagList.map((t) => `#${t.text}`)
-            : ""}
         </CardActions>
 
         <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -152,16 +147,11 @@ const Post = (props) => {
                   />
                 ))
               : "Loading"}
-
-            {localStorage.getItem("currentUser") ? (
-              <CommentForm
-                username={localStorage.getItem("username")}
-                comment={commentText}
-                setCommentRefresh={setCommentRefresh}
-              ></CommentForm>
-            ) : (
-              ""
-            )}
+            <CommentForm
+              username={localStorage.getItem("username")}
+              comment={commentText}
+              setCommentRefresh={setCommentRefresh}
+            ></CommentForm>
           </Container>
         </Collapse>
       </Card>
@@ -169,4 +159,4 @@ const Post = (props) => {
   );
 };
 
-export default Post;
+export default Test;

@@ -33,6 +33,7 @@ const PostEdit = (props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isPublished, setIsPublished] = useState(false);
+  const [error, setError] = useState(null);
 
   const theme = createTheme();
 
@@ -45,7 +46,7 @@ const PostEdit = (props) => {
   const getPostDetail = async () => {
     const postDetail = await getPostById(postId);
 
-    console.log("detailllll:", postDetail.isPublished);
+    console.log("detailllll:", postDetail);
 
     setPostDetail(postDetail);
     setIsLoading(true);
@@ -82,26 +83,36 @@ const PostEdit = (props) => {
 
     console.log("postUpdate", post);
     const result = await updatePostById(postId, post);
-
-    if (result != null) {
+    console.log("updateDonen", result);
+    if (result.errorMessage == null) {
       setTitle("");
       setDescription("");
+      setError(null);
       setIsSaved(true);
       setTimeout(() => {
         navigate("/");
       }, 3000);
+    } else {
+      setError(result.errorMessage);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     }
   };
 
+  let myRef = {};
   return (
     <>
+      {console.log("isSaved", isSaved)}
       {isLoading ? (
         <ThemeProvider theme={theme}>
-          {isSaved ? (
+          {isSaved && error == null ? (
             <Alert severity="success">{POST_UPDATED_VALID}</Alert>
           ) : (
             ""
           )}
+
+          {error != null ? <Alert severity="error">{error}</Alert> : ""}
 
           <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -118,8 +129,9 @@ const PostEdit = (props) => {
               </Typography>
               <Box component="form" noValidate sx={{ mt: 1 }}>
                 <TextField
-                  margin="normal"
                   required
+                  inputRef={myRef}
+                  margin="normal"
                   fullWidth
                   label="Post Title"
                   name="title"
@@ -130,9 +142,10 @@ const PostEdit = (props) => {
                 />
                 <TextField
                   className={classes.description}
+                  required
+                  inputRef={myRef}
                   margin="normal"
                   fullWidth
-                  required
                   label="Post Description"
                   name="description"
                   autoFocus

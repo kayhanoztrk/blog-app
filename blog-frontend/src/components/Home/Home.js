@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Post from "../Post/Post";
-import { getAllPosts } from "../../service/post";
+import { getAllPostsPublished } from "../../service/post";
 import NotFound from "../NotFound/NotFound";
 import { POST_NOT_FOUND_MESSAGE } from "../../constants/Messages";
 
@@ -18,22 +18,31 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
+  const isHome = useRef(true);
 
   const getPostList = async () => {
-    const postList = await getAllPosts();
+    const postList = await getAllPostsPublished();
     setPostList(postList);
     setIsLoaded(true);
   };
 
   useEffect(() => {
     getPostList();
+    isHome.current = true;
   }, []);
 
   const classes = useStyles();
   return (
     <div className={classes.container}>
-      {postList.length > 0 ? (
-        postList.map((post) => <Post key={post.id} post={post} />)
+      {postList ? (
+        postList.map((post) => (
+          <Post
+            key={post.id}
+            post={post}
+            expanded={true}
+            isHome={isHome.current}
+          />
+        ))
       ) : (
         <NotFound message={POST_NOT_FOUND_MESSAGE} />
       )}

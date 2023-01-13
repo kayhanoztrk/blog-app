@@ -1,20 +1,54 @@
-import React, { useState, useEffect } from "react";
-import { CardContent } from "@mui/material";
-import { OutlinedInput } from "@mui/material";
-import { InputAdornment } from "@mui/material";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
-const CommentForm = () => {
-  const handleChange = (value) => {
-    console.log("value", value);
+import {
+  CardContent,
+  InputAdornment,
+  OutlinedInput,
+  Avatar,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "@mui/material/Button";
+import { saveComment } from "../../service/comment";
+
+const useStyles = makeStyles((theme) => ({
+  comment: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  small: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+  },
+  link: {
+    textDecoration: "none",
+    boxShadow: "none",
+    color: "white",
+  },
+}));
+
+const CommentForm = (props) => {
+  const { comment, username, setCommentRefresh } = props;
+  const classes = useStyles();
+  const [commentText, setCommentText] = useState("");
+
+  const handleChange = (val) => {
+    setCommentText(val);
   };
 
   const handleSubmit = () => {
-    console.log("handled submit!");
+    saveComment({
+      postId: comment.postId,
+      userId: localStorage.getItem("currentUser"),
+      text: commentText,
+    });
+    setCommentText("");
+    setCommentRefresh();
   };
 
   return (
-    <CardContent>
+    <CardContent className={classes.comment}>
       <OutlinedInput
         id="outlined-adornment-amount"
         multiline
@@ -23,7 +57,14 @@ const CommentForm = () => {
         onChange={(e) => handleChange(e.target.value)}
         startAdornment={
           <InputAdornment position="start">
-            <Link>deneme</Link>
+            <Link
+              className={classes.link}
+              to={{ pathname: "/users/" + comment.userId }}
+            >
+              <Avatar aria-label="recipe" className={classes.small}>
+                {username.charAt(0).toUpperCase()}
+              </Avatar>
+            </Link>
           </InputAdornment>
         }
         endAdornment={
@@ -40,7 +81,7 @@ const CommentForm = () => {
             </Button>
           </InputAdornment>
         }
-        value="value"
+        value={commentText}
         style={{ color: "black", backgroundColor: "white" }}
       ></OutlinedInput>
     </CardContent>

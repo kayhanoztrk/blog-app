@@ -33,6 +33,7 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import { Alert } from "@mui/material";
+import { USER_UPDATE_INVALID } from "../../constants/Messages";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,6 +84,7 @@ const ProfileSettings = () => {
   const [expanded, setExpanded] = useState(false);
   const [userDetail, setUserDetail] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [error, setError] = useState(null);
 
   const [username, setUsername] = useState("");
@@ -133,18 +135,35 @@ const ProfileSettings = () => {
       userInfo
     );
 
-    if (response != null) {
+    console.log("errorMessage", response.errorMessage);
+    if (response.errorMessage == null) {
       setUsername("");
       setUserBio("");
+      setError(null);
+      setIsEdit(true);
       setMessage(USER_UPDATE_VALID);
-      setTimeout(() => navigate(-1), 2000);
+      setTimeout(() => navigate(-1), 1500);
+    } else {
+      console.log("errorMessage", response.errorMessage);
+      setError(response.errorMessage);
+      setTimeout(() => navigate(-1), 1500);
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
-      {message != null ? (
+      {console.log("error", error)}
+      {isEdit && error == null ? (
         <Alert severity="success">{USER_UPDATE_VALID}</Alert>
+      ) : (
+        ""
+      )}
+
+      {error != null ? (
+        <Alert severity="error">
+          {USER_UPDATE_INVALID}
+          {error}
+        </Alert>
       ) : (
         ""
       )}

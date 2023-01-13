@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -25,6 +25,7 @@ import { useParams } from "react-router-dom";
 import { getPostById } from "../../service/post";
 import Author from "../Author/Author";
 import NotFound from "../NotFound/NotFound";
+import Post from "../Post/Post";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +75,7 @@ const PostDetail = () => {
   const [postDetail, setPostDetail] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const isHome = useRef(false);
 
   const { postId } = useParams();
   const classes = useStyles();
@@ -100,30 +102,12 @@ const PostDetail = () => {
 
   return isLoaded && error == null ? (
     <div>
-      <Card className={classes.root}>
-        <CardContent>
-          <Typography variant="h3" gutterBottom>
-            {postDetail.title}
-          </Typography>
-          <Typography variant="body1">
-            {postDetail.text}
-            <br />
-          </Typography>
-        </CardContent>
-        <CardActions></CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Container fixed className={classes.container}>
-            <Comment username="kayhan" />
-            <Comment username="selin" />
-            <CommentForm />
-          </Container>
-        </Collapse>
-
-        <IconButton onClick={(e) => handleExpandClick}>
-          {expanded}
-          <CommentIcon></CommentIcon>
-        </IconButton>
-      </Card>
+      <Post
+        post={postDetail}
+        expanded={expanded}
+        handleExpandClick={handleExpandClick}
+        isHome={isHome.current}
+      />
       <Author user={postDetail.user} />
     </div>
   ) : (

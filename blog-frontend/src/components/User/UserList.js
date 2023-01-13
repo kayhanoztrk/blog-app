@@ -20,7 +20,6 @@ const UserList = () => {
 
   const getUserList = async () => {
     const userList = await getAllUsers();
-    console.log("userList", userList);
     setUserList(userList);
     setIsLoaded(true);
   };

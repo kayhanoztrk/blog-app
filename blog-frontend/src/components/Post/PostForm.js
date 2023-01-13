@@ -16,7 +16,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { sendAuthProcess } from "../../service/auth";
 import { savePost } from "../../service/post";
-import { POST_SAVED_VALID } from "../../constants/Messages";
+import { POST_SAVED_VALID, POST_SAVED_INVALID } from "../../constants/Messages";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +30,7 @@ const PostForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
+  const [error, setError] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
 
   const theme = createTheme();
@@ -68,20 +69,34 @@ const PostForm = () => {
 
     const result = await savePost(post);
 
-    if (result != null) {
+    if (result.errorMessage == null) {
       setTitle("");
       setDescription("");
       setTags("");
+      setError(null);
       setIsSaved(true);
       setTimeout(() => {
         navigate("/");
       }, 3000);
+    } else {
+      setError(result.errorMessage);
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     }
   };
 
   return (
     <ThemeProvider theme={theme}>
       {isSaved ? <Alert severity="success">{POST_SAVED_VALID}</Alert> : ""}
+      {error != null ? (
+        <Alert severity="error">
+          {POST_SAVED_INVALID}
+          {error}
+        </Alert>
+      ) : (
+        ""
+      )}
 
       <Container component="main" maxWidth="xs">
         <CssBaseline />
