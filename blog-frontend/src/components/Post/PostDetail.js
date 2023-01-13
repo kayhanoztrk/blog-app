@@ -70,7 +70,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 const PostDetail = () => {
-  console.log("postDetail is loading!!");
   const [expanded, setExpanded] = useState(false);
   const [postDetail, setPostDetail] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -82,7 +81,6 @@ const PostDetail = () => {
   const navigate = useNavigate();
 
   const getPostDetail = async () => {
-    console.log("postId", postId);
     const postDetail = await getPostById(postId);
 
     setPostDetail(postDetail);

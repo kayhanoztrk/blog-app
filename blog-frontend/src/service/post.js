@@ -64,7 +64,6 @@ export const getAllPostsByUserId = async (userId) => {
 };
 
 export const savePost = async (post) => {
-  console.log("post.tags", post.tags);
   try {
     const response = await fetch("/api/v1/post", {
       method: "POST",
@@ -79,8 +78,6 @@ export const savePost = async (post) => {
         userId: post.userId,
       }),
     });
-    console.log("postSaved", post);
-    //console.log("donenHata:", JSON.stringify(response.json()));
     return response.json();
   } catch (e) {
     console.log("e.message", e.message);
@@ -89,7 +86,6 @@ export const savePost = async (post) => {
 };
 
 export const updatePostById = async (postId, post) => {
-  console.log("post.tags", post.tags);
   try {
     const response = await fetch("/api/v1/post/" + postId, {
       method: "PUT",

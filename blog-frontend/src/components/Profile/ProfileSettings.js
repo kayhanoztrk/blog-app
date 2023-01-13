@@ -135,7 +135,6 @@ const ProfileSettings = () => {
       userInfo
     );
 
-    console.log("errorMessage", response.errorMessage);
     if (response.errorMessage == null) {
       setUsername("");
       setUserBio("");
@@ -144,7 +143,6 @@ const ProfileSettings = () => {
       setMessage(USER_UPDATE_VALID);
       setTimeout(() => navigate(-1), 1500);
     } else {
-      console.log("errorMessage", response.errorMessage);
       setError(response.errorMessage);
       setTimeout(() => navigate(-1), 1500);
     }
@@ -152,7 +150,6 @@ const ProfileSettings = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {console.log("error", error)}
       {isEdit && error == null ? (
         <Alert severity="success">{USER_UPDATE_VALID}</Alert>
       ) : (

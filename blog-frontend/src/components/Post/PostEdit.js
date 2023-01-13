@@ -46,8 +46,6 @@ const PostEdit = (props) => {
   const getPostDetail = async () => {
     const postDetail = await getPostById(postId);
 
-    console.log("detailllll:", postDetail);
-
     setPostDetail(postDetail);
     setIsLoading(true);
     setTitle(postDetail.title);
@@ -81,9 +79,7 @@ const PostEdit = (props) => {
       userId: 1,
     };
 
-    console.log("postUpdate", post);
     const result = await updatePostById(postId, post);
-    console.log("updateDonen", result);
     if (result.errorMessage == null) {
       setTitle("");
       setDescription("");
@@ -103,7 +99,6 @@ const PostEdit = (props) => {
   let myRef = {};
   return (
     <>
-      {console.log("isSaved", isSaved)}
       {isLoading ? (
         <ThemeProvider theme={theme}>
           {isSaved && error == null ? (

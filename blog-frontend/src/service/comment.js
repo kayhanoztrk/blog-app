@@ -27,10 +27,7 @@ export const saveComment = async (comment) => {
         text: comment.text,
       }),
     });
-
-    console.log("responseDenem", response);
   } catch (e) {
-    console.log("error.message", e.message);
     if (e == "Unauthorized") {
       console.log("e.message", e.message);
     }

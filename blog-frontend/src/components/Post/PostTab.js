@@ -70,8 +70,6 @@ const PostTab = (props) => {
     const postList = await getPostPublishedList(userId);
     setPostPublishedList(postList);
 
-    console.log("PUBLISHEDLIST", postList);
-    console.log("userId", userId);
     setIsLoaded(true);
   };
   const findPostDraftList = async () => {

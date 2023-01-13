@@ -81,7 +81,6 @@ const Test = (props) => {
   const classes = useStyles();
 
   const handleExpandClick = () => {
-    console.log("expandeddd!!");
     setExpanded(!expanded);
     getAllComments();
   };
@@ -95,7 +94,6 @@ const Test = (props) => {
     setCommentList(commentDetailList);
     setIsLoaded(true);
     setRefresh(false);
-    console.log("bakalım gelecek mi!!!");
   };
 
   useEffect(() => {

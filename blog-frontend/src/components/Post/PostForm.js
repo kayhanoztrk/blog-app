@@ -54,8 +54,6 @@ const PostForm = () => {
   const handleSavePostSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("handleSavePostSubmit", "denemelerceee");
-
     const tagList = tags.split(",").map((tag) => ({
       text: tag,
     }));
