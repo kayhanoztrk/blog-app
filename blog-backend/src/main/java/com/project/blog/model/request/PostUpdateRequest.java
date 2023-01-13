@@ -1,11 +1,8 @@
 package com.project.blog.model.request;
 
-import com.project.blog.entity.Tag;
 import lombok.Data;
-
+import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-
 /**
  * @author Kayhan Öztürk
  * @version 0.1
@@ -15,7 +12,11 @@ import java.util.List;
 public class PostUpdateRequest {
 
     private Long id;
+    @NotNull(message = "Post title can not be null")
+    @NotEmpty(message = "Post title can not be empty!")
     private String title;
+    @NotNull(message = "Post content should not be null!")
+    @NotEmpty(message = "Post content can not be empty!")
     private String text;
     @NotNull(message = "Post owner userId should not be null!")
     private Long userId;

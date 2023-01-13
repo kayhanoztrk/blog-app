@@ -84,6 +84,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public List<CommentResponse> findByPostId(Long postId) {
+        return commentRepository.findByPostId(postId)
+                .stream().map(comment -> commentDtoMapper.convertEntityToResp(comment))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<CommentResponse> findAllCommentsByUserId(Long userId) {
         List<Comment> commentList = commentRepository.findByUserId(userId);
         List<CommentResponse> commentResponseList = commentList.stream()

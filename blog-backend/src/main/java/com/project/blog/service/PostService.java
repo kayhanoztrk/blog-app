@@ -15,11 +15,13 @@ import java.util.List;
 public interface PostService {
     PostResponse createPost(PostCreateRequest postCreateRequest);
     List<Post> findAll();
+
+    List<PostResponse> findAllPublished();
     PostResponse findById(Long postId);
     PostResponse findTagNotExistsPostByPostId(Long postId);
     PostResponse updatePostById(Long postId, PostUpdateRequest request);
     List<PostResponse> findAllPostByUserId(Long userId);
     void deleteByPostId(Long postId);
 
-    List<PostResponse> findAllDraftOrPublishedPost(boolean isPublished);
+    List<PostResponse> findAllDraftOrPublishedPost(boolean isPublished, Long userId);
 }

@@ -7,12 +7,10 @@ import com.project.blog.model.response.PostResponse;
 import com.project.blog.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -38,8 +36,14 @@ public class PostController {
         return ResponseEntity.ok(postList);
     }
 
+    @GetMapping("/published")
+    public ResponseEntity<List<PostResponse>> findAllPublished() {
+        List<PostResponse> postList = postService.findAllPublished();
+        return ResponseEntity.ok(postList);
+    }
+
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestBody PostCreateRequest postCreateRequest) {
+    public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
         PostResponse postResponse = postService.createPost(postCreateRequest);
         return ResponseEntity.ok(postResponse);
     }
@@ -51,7 +55,8 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    public ResponseEntity<PostResponse> updatePostById(@PathVariable Long postId, @RequestBody PostUpdateRequest request) {
+    public ResponseEntity<PostResponse> updatePostById(@PathVariable Long postId,
+                                                       @Valid @RequestBody PostUpdateRequest request) {
         PostResponse postResponse = postService.updatePostById(postId, request);
         return ResponseEntity.ok(postResponse);
     }
@@ -69,15 +74,17 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/draft")
-    public ResponseEntity<List<PostResponse>> findAllDraftPost() {
-        List<PostResponse> postResponseList = postService.findAllDraftOrPublishedPost(false);
+    @GetMapping("/draft/user/{userId}")
+    public ResponseEntity<List<PostResponse>> findAllDraftPost(@PathVariable
+                                                               Long userId) {
+        List<PostResponse> postResponseList = postService.findAllDraftOrPublishedPost(false, userId);
         return ResponseEntity.ok(postResponseList);
     }
 
-    @GetMapping("/published")
-    public ResponseEntity<List<PostResponse>> findAllPublishedPost() {
-        List<PostResponse> postResponseList = postService.findAllDraftOrPublishedPost(true);
+    @GetMapping("/published/user/{userId}")
+    public ResponseEntity<List<PostResponse>> findAllPublishedPost(@PathVariable
+                                                                   Long userId) {
+        List<PostResponse> postResponseList = postService.findAllDraftOrPublishedPost(true, userId);
         return ResponseEntity.ok(postResponseList);
     }
 

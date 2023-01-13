@@ -26,9 +26,12 @@ public class CommentDtoMapper {
 
     public CommentResponse convertEntityToResp(Comment comment) {
         CommentResponse commentResponse = new CommentResponse();
+        commentResponse.setId(comment.getId());
         commentResponse.setText(comment.getText());
+        commentResponse.setUsername(comment.getUser().getUsername());
         commentResponse.setPostId(comment.getPost().getId());
         commentResponse.setUserId(comment.getUser().getId());
+        commentResponse.setCreatedAt(comment.getCreatedAt());
         return commentResponse;
     }
 }

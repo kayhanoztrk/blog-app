@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId,
-                                                   @RequestBody UserUpdateRequest updateRequest) {
+                                                   @Valid @RequestBody UserUpdateRequest updateRequest) {
         UserResponse response = userService.updateByUserId(userId, updateRequest);
         return ResponseEntity.ok(response);
     }

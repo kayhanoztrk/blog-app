@@ -15,6 +15,8 @@ public interface CommentService {
     List<CommentResponse> findAll();
     CommentResponse findById(Long commentId);
 
+    List<CommentResponse> findByPostId(Long postId);
+
     List<CommentResponse> findAllCommentsByUserId(Long userId);
     List<CommentResponse> findAllCommentsByPostId(Long postId);
 

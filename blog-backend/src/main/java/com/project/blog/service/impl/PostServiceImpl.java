@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +78,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostResponse> findAllPublished() {
+        List<Post> postList = postRepository.findAllPublished();
+
+        return postList.stream()
+                .map(post -> postDtoMapper.convertEntityToResponse(post))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Cacheable(value = "post", key = "#postId")
     public PostResponse findById(Long postId) {
@@ -116,14 +126,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    @CacheEvict(value = "postList", allEntries = true)
+    @Caching(evict = { @CacheEvict(value = "postList", allEntries = true),
+            @CacheEvict(value = "post", key = "#postId"), })
     public void deleteByPostId(Long postId) {
         postRepository.deleteById(postId);
     }
 
     @Override
-    public List<PostResponse> findAllDraftOrPublishedPost(boolean isPublished) {
-        List<Post> postList = postRepository.findAllDraftOrPublishedPost(isPublished);
+    public List<PostResponse> findAllDraftOrPublishedPost(boolean isPublished,
+                                                          Long userId) {
+        List<Post> postList = postRepository.findAllDraftOrPublishedPost(isPublished,
+                userId);
 
         return postList.stream()
                 .map(post -> postDtoMapper.convertEntityToResponse(post))

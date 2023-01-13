@@ -33,11 +33,14 @@ public class CommentController {
         return ResponseEntity.ok(commentResponseList);
     }
 
-    @GetMapping("/{commentId}")
-    public ResponseEntity<CommentResponse> findById(@PathVariable Long commentId) {
-        CommentResponse commentResponse = commentService.findById(commentId);
-        return ResponseEntity.ok(commentResponse);
+    @GetMapping("/view")
+    public ResponseEntity<List<CommentResponse>> findByPostId(@RequestParam
+                                                            Long postId) {
+        List<CommentResponse> commentResponseList = commentService.findByPostId(postId);
+        return ResponseEntity.ok(commentResponseList);
     }
+
+
 
     @PostMapping
     public ResponseEntity<CommentResponse> createComment(@RequestBody CommentCreateRequest

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Date;
+
 /**
  * @author Kayhan Öztürk
  * @version 0.1
@@ -16,7 +18,12 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 public class CommentResponse extends BaseResponse{
+    private Long id;
     private String text;
+    private String username;
     private Long postId;
+
     private Long userId;
+
+    private Date createdAt;
 }

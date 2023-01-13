@@ -16,7 +16,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT p.id,p.title,p.text, p.tags FROM Post p WHERE p.id=:postId",nativeQuery = true)
     Post findTagNotExistsPostByPostId(Long postId);
     List<Post> findByUserId(Long userId);
-    @Query(value = "SELECT p FROM Post p WHERE p.isPublished=:isPublished")
+    @Query(value = "SELECT p FROM Post p WHERE p.isPublished=:isPublished and p.user.id = :userId")
     List<Post> findAllDraftOrPublishedPost(@Param("isPublished")
-                                           boolean isPublished);
+                                           boolean isPublished, @Param("userId")
+                                           Long userId);
+
+    @Query(value = "SELECT p FROM Post p WHERE p.isPublished=true ORDER BY p.id DESC")
+    List<Post> findAllPublished();
 }

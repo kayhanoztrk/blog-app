@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -21,8 +22,10 @@ import java.util.List;
 public class PostCreateRequest {
 
     @NotNull(message = "Post title should not be null!")
+    @NotEmpty(message = "Post title should not be null!")
     private String title;
     @NotNull(message = "Post text should not be null!")
+    @NotEmpty(message = "Post text should not be null!")
     private String text;
 
     @NotNull(message = "Post owner userId should not be null!")
