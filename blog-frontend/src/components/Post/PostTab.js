@@ -9,7 +9,11 @@ import PostList from "./PostList";
 import PostCard from "./PostCard";
 import { CardActions } from "@mui/material";
 import { Button } from "@mui/material";
-import { getPostPublishedList, getPostDraftList } from "../../service/post";
+import {
+  getPostPublishedList,
+  getPostDraftList,
+  getPostCommentedList,
+} from "../../service/post";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -62,6 +66,7 @@ const PostTab = (props) => {
   const [value, setValue] = React.useState(0);
   const [postPublishedList, setPostPublishedList] = useState([]);
   const [postDraftList, setPostDraftList] = useState([]);
+  const [postMostCommentedList, setPostMostCommentedList] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { isOwner } = props;
@@ -78,9 +83,16 @@ const PostTab = (props) => {
     setIsLoaded(true);
   };
 
+  const findPostMostCommentedList = async () => {
+    const postList = await getPostCommentedList(userId);
+    setPostMostCommentedList(postList);
+    setIsLoaded(true);
+  };
+
   useEffect(() => {
     findPostPublishedList();
     findPostDraftList();
+    findPostMostCommentedList();
   }, []);
 
   const classes = useStyles();
@@ -99,7 +111,8 @@ const PostTab = (props) => {
             aria-label="basic tabs example"
           >
             <Tab label="Published Contents" {...a11yProps(0)} />
-            <Tab label="Drafts" {...a11yProps(1)} />
+            {isOwner ? <Tab label="Drafts" {...a11yProps(1)} /> : ""}
+            <Tab label="Most Commented" {...a11yProps(2)} />
           </Tabs>
         </Box>
 
@@ -122,6 +135,7 @@ const PostTab = (props) => {
                 postInfo={post}
                 refreshPostPublishedList={findPostPublishedList}
                 refreshPostDraftList={findPostDraftList}
+                refreshPostMostCommented={findPostMostCommentedList}
                 isOwner={isOwner}
               />
             ))}
@@ -129,6 +143,18 @@ const PostTab = (props) => {
         ) : (
           ""
         )}
+
+        <TabPanel value={value} index={1} component={"div"}>
+          {postMostCommentedList.map((post) => (
+            <PostCard
+              key={post.id}
+              postInfo={post}
+              refreshPostPublishedList={findPostPublishedList}
+              refreshPostDraftList={findPostDraftList}
+              isOwner={isOwner}
+            />
+          ))}
+        </TabPanel>
       </Box>
     </div>
   );

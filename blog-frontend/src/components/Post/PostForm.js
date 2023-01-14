@@ -145,6 +145,15 @@ const PostForm = () => {
             />
             (you can split your tags with using ',')
             <Button
+              variant="contained"
+              component="label"
+              margin="normal"
+              fullWidth
+            >
+              Upload File
+              <input accept="image/*" type="file" hidden />
+            </Button>
+            <Button
               type="submit"
               fullWidth
               variant="contained"

@@ -40,8 +40,13 @@ const PostCard = (props) => {
   const classes = useStyles();
   const navigator = useNavigate();
 
-  const { postInfo, refreshPostPublishedList, refreshPostDraftList, isOwner } =
-    props;
+  const {
+    postInfo,
+    refreshPostPublishedList,
+    refreshPostDraftList,
+    refreshPostMostCommented,
+    isOwner,
+  } = props;
 
   const [isDeleted, setIsDeleted] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -61,6 +66,7 @@ const PostCard = (props) => {
       setTimeout(() => {
         refreshPostPublishedList();
         refreshPostDraftList();
+        refreshPostMostCommented();
       }, 1000);
     }
   };
@@ -82,6 +88,7 @@ const PostCard = (props) => {
       setTimeout(() => {
         refreshPostPublishedList();
         refreshPostDraftList();
+        refreshPostMostCommented();
       }, 1000);
     }
   };
