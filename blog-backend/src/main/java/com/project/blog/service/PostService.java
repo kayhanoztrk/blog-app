@@ -4,7 +4,9 @@ import com.project.blog.entity.Post;
 import com.project.blog.model.request.PostCreateRequest;
 import com.project.blog.model.request.PostUpdateRequest;
 import com.project.blog.model.response.PostResponse;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ import java.util.List;
  * @since 0.1
  */
 public interface PostService {
-    PostResponse createPost(PostCreateRequest postCreateRequest);
+    PostResponse createPost(PostCreateRequest postCreateRequest) throws IOException;
     List<Post> findAll();
 
     List<PostResponse> findAllPublished();

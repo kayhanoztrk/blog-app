@@ -1,7 +1,5 @@
 package com.project.blog.model.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.blog.entity.Image;
 import com.project.blog.entity.Tag;
 import com.project.blog.entity.User;
 import lombok.AllArgsConstructor;
@@ -27,7 +25,6 @@ public class PostResponse extends BaseResponse{
     private String text;
     private Date createdAt;
     private User user;
-    private Image image;
     private List<Tag> tagList;
     private Boolean isPublished;
 }

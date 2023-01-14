@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
+    public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) throws IOException {
         PostResponse postResponse = postService.createPost(postCreateRequest);
         return ResponseEntity.ok(postResponse);
     }

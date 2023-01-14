@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -56,7 +57,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @CacheEvict(value = "postList", allEntries = true)
-    public PostResponse createPost(PostCreateRequest postCreateRequest) {
+    public PostResponse createPost(PostCreateRequest postCreateRequest) throws IOException {
 
         UserResponse userResponse = userService.findById(postCreateRequest.getUserId());
         User user = userDtoMapper.convertRespToEntity(userResponse);
@@ -67,7 +68,6 @@ public class PostServiceImpl implements PostService {
         Post savedPost = postRepository.save(post);
 
         PostResponse postResponse = postDtoMapper.convertEntityToResponse(savedPost);
-
         return postResponse;
     }
 
