@@ -8,6 +8,7 @@ import com.project.blog.mapper.PostDtoMapper;
 import com.project.blog.mapper.UserDtoMapper;
 import com.project.blog.model.request.PostCreateRequest;
 import com.project.blog.model.request.PostUpdateRequest;
+import com.project.blog.model.response.PostCommentedResponse;
 import com.project.blog.model.response.PostResponse;
 import com.project.blog.model.response.UserResponse;
 import com.project.blog.repository.PostRepository;
@@ -123,6 +124,23 @@ public class PostServiceImpl implements PostService {
         return postRepository.findByUserId(userId).stream()
                 .map((post) -> postDtoMapper.convertEntityToResponse(post))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostResponse> findMostCommented(Long userId) {
+        List<PostCommentedResponse> postList =  postRepository.findCommentedPost(userId);
+        List<PostResponse> responseList = postList.stream().map((post) -> {
+                Post pEntity = new Post();
+                pEntity.setId(post.getId());
+                pEntity.setTitle(post.getTitle());
+                pEntity.setText(post.getText());
+                pEntity.setCreatedAt(post.getCreatedAt());
+                pEntity.setIsPublished(post.getIsPublished());
+
+                return postDtoMapper.convertEntityToResponse(pEntity);
+        }).collect(Collectors.toList());
+
+        return responseList;
     }
 
     @Override

@@ -42,6 +42,13 @@ public class PostController {
         return ResponseEntity.ok(postList);
     }
 
+    @GetMapping("/mostCommented")
+    public ResponseEntity<List<PostResponse>> findMostCommented(
+            @RequestParam Long userId){
+        List<PostResponse> postResponseList = postService.findMostCommented(userId);
+        return ResponseEntity.ok(postResponseList);
+    }
+
     @PostMapping
     public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostCreateRequest postCreateRequest) {
         PostResponse postResponse = postService.createPost(postCreateRequest);

@@ -40,6 +40,10 @@ public class Post implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "image_id", nullable = true)
+    private Image image;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "post_tag", joinColumns =
     @JoinColumn(name = "post_id"),
