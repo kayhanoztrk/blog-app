@@ -1,5 +1,6 @@
 package com.project.blog.entity;
 
+import com.project.blog.model.constants.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,9 @@ public class User implements Serializable {
     private Long id;
     private String username;
     private String password;
+
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
     private String bio;
 }
