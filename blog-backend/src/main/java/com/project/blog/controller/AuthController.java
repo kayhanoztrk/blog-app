@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.project.blog.controller.PostController.logger;
-
 /**
  * @author Kayhan Öztürk
  * @version 0.1
