@@ -22,16 +22,13 @@ import java.io.IOException;
  */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final String TOKEN_TYPE = "Bearer";
-
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private UserDetailsServiceImpl userDetails;
-
-    @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -49,13 +46,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         filterChain.doFilter(request, response);
-
     }
 
-    public String extractJwtFromRequest(HttpServletRequest request){
+    private String extractJwtFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")){
-            return bearer.substring(bearer.length() + 1);
+        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
+            return bearer.substring("Bearer".length() + 1);
         }
         return null;
     }

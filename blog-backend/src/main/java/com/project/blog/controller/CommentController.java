@@ -1,6 +1,5 @@
 package com.project.blog.controller;
 
-import com.project.blog.entity.Comment;
 import com.project.blog.model.request.CommentCreateRequest;
 import com.project.blog.model.response.CommentResponse;
 import com.project.blog.service.CommentService;

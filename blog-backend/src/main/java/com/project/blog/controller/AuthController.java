@@ -1,6 +1,7 @@
 package com.project.blog.controller;
 
 import com.project.blog.entity.User;
+import com.project.blog.model.constants.Role;
 import com.project.blog.model.request.UserCreateRequest;
 import com.project.blog.model.request.UserRequest;
 import com.project.blog.model.response.AuthResponse;
@@ -55,6 +56,7 @@ public class AuthController {
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
         User user = userService.findByUsername(request.getUsername());
 
+        logger.info("jwtToken info{}", jwtToken);
         AuthResponse authResponse = new AuthResponse();
         authResponse.setAccessToken("Bearer " + jwtToken);
         authResponse.setUserId(user.getId());
@@ -66,13 +68,17 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody UserRequest request) {
+        logger.info("request deneme{}", request);
         AuthResponse authResponse = new AuthResponse();
         if (userService.findByUsername(request.getUsername()) != null) {
             authResponse.setMessage("username already in use");
         } else {
+
+            logger.info("bu kez else'e girdi {}");
             UserCreateRequest createRequest = new UserCreateRequest();
             createRequest.setUsername(request.getUsername());
             createRequest.setPassword(passwordEncoder.encode(request.getPassword()));
+            createRequest.setRole(Role.USER);
             userService.createUser(createRequest);
 
             UsernamePasswordAuthenticationToken authenticationToken =
@@ -80,11 +86,13 @@ public class AuthController {
             Authentication auth = authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(auth);
             String jwtToken = jwtTokenProvider.generateJwtToken(auth);
+            logger.info("jwtToken info [}", jwtToken);
             authResponse.setAccessToken("Bearer " + jwtToken);
             //authResponse.setUserId(createRequest.getId());
             authResponse.setMessage("user has been created successfully");
         }
         logger.info("authResponseGetMessage" + authResponse.getMessage());
-        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+        //return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+        return ResponseEntity.ok(authResponse);
     }
 }

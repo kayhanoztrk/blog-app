@@ -1,5 +1,6 @@
 package com.project.blog.model.response;
 
+import com.project.blog.model.constants.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,6 @@ public class UserResponse extends BaseResponse{
     private String password;
 
     private String bio;
+
+    private Role role;
 }

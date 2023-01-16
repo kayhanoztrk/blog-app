@@ -17,6 +17,8 @@ import com.project.blog.service.PostService;
 import com.project.blog.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -54,6 +56,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @CacheEvict(value = "commentList", allEntries = true)
     public CommentResponse createComment(CommentCreateRequest commentCreateRequest) {
 
         UserResponse userResponse = userService.findById(commentCreateRequest.getUserId());
@@ -70,6 +73,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable("commentList")
     public List<CommentResponse> findAll() {
         return commentRepository.findAll().
                 stream().map(comment -> commentDtoMapper.convertEntityToResp(comment))
@@ -77,6 +81,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = "comment", key="#commentId")
     public CommentResponse findById(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId + " NOT FOUND!"));
@@ -91,6 +96,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = "commentListByUser", key="#userId")
     public List<CommentResponse> findAllCommentsByUserId(Long userId) {
         List<Comment> commentList = commentRepository.findByUserId(userId);
         List<CommentResponse> commentResponseList = commentList.stream()
@@ -100,6 +106,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = "allCommentsByPostId", key = "#postId")
     public List<CommentResponse> findAllCommentsByPostId(Long postId) {
 
         List<Comment> commentList = commentRepository.findByPostId(postId);

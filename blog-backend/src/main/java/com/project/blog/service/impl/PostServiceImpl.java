@@ -58,7 +58,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @CacheEvict(value = "postList", allEntries = true)
     public PostResponse createPost(PostCreateRequest postCreateRequest) throws IOException {
-
+        logger.info("create post {}");
         UserResponse userResponse = userService.findById(postCreateRequest.getUserId());
         User user = userDtoMapper.convertRespToEntity(userResponse);
         User toSaveUser = Optional.ofNullable(user)
@@ -79,6 +79,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Cacheable(value = "publishedPost")
     public List<PostResponse> findAllPublished() {
         List<Post> postList = postRepository.findAllPublished();
 
@@ -127,6 +128,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Cacheable(value = "mostCommented")
     public List<PostResponse> findMostCommented(Long userId) {
         List<PostCommentedResponse> postList =  postRepository.findCommentedPost(userId);
         List<PostResponse> responseList = postList.stream().map((post) -> {

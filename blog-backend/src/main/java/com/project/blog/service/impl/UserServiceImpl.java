@@ -10,6 +10,9 @@ import com.project.blog.repository.UserRepository;
 import com.project.blog.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable("userList")
     public List<UserResponse> findAll() {
         return userRepository.findAll().stream()
                 .map(user -> userDtoMapper.convertEntityToResp(user))
@@ -42,6 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "user", key = "#userId")
     public UserResponse findById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId + " userId can not be found!"));
@@ -49,6 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(value = "userList", allEntries = true)
     public UserResponse createUser(UserCreateRequest userCreateRequest) {
         User user = userDtoMapper.convertToEntity(userCreateRequest);
         User savedUser = userRepository.save(user);
@@ -61,6 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CachePut(value = "user", key = "#userId")
     public UserResponse updateByUserId(Long userId, UserUpdateRequest updateRequest) {
         User toUser = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId + " not found user!"));

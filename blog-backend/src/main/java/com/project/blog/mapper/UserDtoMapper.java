@@ -18,6 +18,7 @@ public class UserDtoMapper {
         userResponse.setId(user.getId());
         userResponse.setUsername(user.getUsername());
         userResponse.setPassword(user.getPassword());
+        userResponse.setRole(user.getRole());
         userResponse.setBio(user.getBio());
         return userResponse;
     }
@@ -26,6 +27,7 @@ public class UserDtoMapper {
         User user = new User();
         user.setUsername(userCreateRequest.getUsername());
         user.setPassword(userCreateRequest.getPassword());
+        user.setRole(userCreateRequest.getRole());
         return user;
     }
 
@@ -34,6 +36,7 @@ public class UserDtoMapper {
         user.setId(userResponse.getId());
         user.setUsername(userResponse.getUsername());
         user.setPassword(userResponse.getPassword());
+        user.setRole(userResponse.getRole());
         user.setBio(userResponse.getBio());
         return user;
     }
