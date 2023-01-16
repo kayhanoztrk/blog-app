@@ -12,12 +12,46 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
+
+import { sendRequest } from "../../service/auth";
 
 const Login = () => {
   const theme = createTheme();
 
-  const handleSubmit = (e) => {
-    e.preventDefaul();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const history = useNavigate();
+
+  const handleUsername = (val) => {
+    setUsername(val);
+  };
+
+  const handlePassword = (val) => {
+    setPassword(val);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const process = "login";
+    const userInfo = {
+      username: username,
+      password: password,
+    };
+
+    console.log("processInfo", process);
+    const result = await sendRequest(process, userInfo);
+
+    localStorage.setItem("tokenKey", result.accessToken);
+    localStorage.setItem("refreshKey", result.refreshToken);
+    localStorage.setItem("currentUser", result.userId);
+    localStorage.setItem("username", username);
+
+    setUsername("");
+    setPassword("");
+
+    history("/auth");
   };
 
   return (
@@ -38,12 +72,7 @@ const Login = () => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -53,6 +82,7 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => handleUsername(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -63,12 +93,14 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => handlePassword(e.target.value)}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={(e) => handleLogin(e)}
             >
               Login
             </Button>

@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 
-import { sendAuthProcess } from "../../service/auth";
+import { sendRequest } from "../../service/auth";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -21,7 +21,7 @@ const Register = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const theme = createTheme();
 
-  const navigate = useNavigate();
+  const history = useNavigate();
 
   const handleUsername = (val) => {
     setUsername(val);
@@ -31,23 +31,27 @@ const Register = () => {
     setPassword(val);
   };
 
-  const handleRegisterSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const result = await sendAuthProcess("", {
+    console.log("handleRegister event!!");
+    const process = "register";
+    const userInfo = {
       username: username,
       password: password,
-    });
+    };
 
-    if (result != null) {
-      localStorage.setItem("userId", result.id);
-      localStorage.setItem("username", username);
-      localStorage.setItem("currentUser", result.id);
+    const result = await sendRequest(process, userInfo);
 
-      setUsername("");
-      setPassword("");
-      setIsRegistered(true);
-      navigate("/user/" + localStorage.getItem("currentUser"));
-    }
+    console.log("result", result);
+    localStorage.setItem("tokenKey", result.accessToken);
+    localStorage.setItem("currentUser", result.userId);
+    localStorage.setItem("username", username);
+
+    setUsername("");
+    setPassword("");
+
+    //it will redirect to auth page again.
+    history("/auth");
   };
 
   return (
@@ -105,7 +109,7 @@ const Register = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleRegisterSubmit}
+              onClick={(e) => handleRegister(e)}
             >
               Register
             </Button>

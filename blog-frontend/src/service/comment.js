@@ -4,6 +4,7 @@ export const getAllCommentsByPostId = async (postId) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
     });
     return response.json();
@@ -20,6 +21,7 @@ export const saveComment = async (comment) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
       body: JSON.stringify({
         postId: comment.postId,

@@ -14,7 +14,7 @@ import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { sendAuthProcess } from "../../service/auth";
+import { sendRequest } from "../../service/auth";
 import { savePost } from "../../service/post";
 import { POST_SAVED_VALID, POST_SAVED_INVALID } from "../../constants/Messages";
 

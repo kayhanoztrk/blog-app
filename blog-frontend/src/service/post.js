@@ -4,6 +4,7 @@ export const getAllPostsPublished = async () => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
     });
     return response.json();
@@ -19,6 +20,7 @@ export const getPostPublishedList = async (userId) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
     });
     return response.json();
@@ -34,6 +36,7 @@ export const getPostDraftList = async (userId) => {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
     });
     return response.json();
@@ -51,6 +54,7 @@ export const getPostCommentedList = async (userId) => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Authorization: localStorage.getItem("tokenKey"),
         },
       }
     );
@@ -88,6 +92,7 @@ export const savePost = async (post) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
       body: JSON.stringify({
         title: post.title,
@@ -110,6 +115,7 @@ export const updatePostById = async (postId, post) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
       body: JSON.stringify({
         title: post.title,
@@ -132,6 +138,7 @@ export const deletePostById = async (postId) => {
       method: "DELETE",
       headers: {
         Accept: "application/json",
+        Authorization: localStorage.getItem("tokenKey"),
       },
     });
     return response;
