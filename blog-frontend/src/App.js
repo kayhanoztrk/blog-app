@@ -13,9 +13,10 @@ import NotFound from "./components/NotFound/NotFound";
 import {
   BrowserRouter,
   Route,
-  Navigate,
+  Redirect,
   Switch,
   Routes,
+  Navigate,
 } from "react-router-dom";
 import PostForm from "./components/Post/PostForm";
 import ProfileSettings from "./components/Profile/ProfileSettings";
@@ -38,16 +39,16 @@ function App() {
           <Route exact path="/notfound" element={<NotFound />} />
           <Route exact path="/login">
             {localStorage.getItem("currentUser") != null ? (
-              <Navigate replace to="/" />
+              <Route path="*" element={<Home />} />
             ) : (
-              <Login />
+              <Route path="*" element={<Login />} />
             )}
           </Route>
           <Route exact path="/register">
             {localStorage.getItem("currentUser") != null ? (
-              <Navigate replace to="/" />
+              <Route path="*" element={<Home />} />
             ) : (
-              <Register />
+              <Route path="*" element={<Register />} />
             )}
           </Route>
         </Routes>

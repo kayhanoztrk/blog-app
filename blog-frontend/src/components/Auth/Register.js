@@ -19,6 +19,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
+  const [error, setError] = useState("");
   const theme = createTheme();
 
   const history = useNavigate();
@@ -33,7 +34,6 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("handleRegister event!!");
     const process = "register";
     const userInfo = {
       username: username,
@@ -43,15 +43,20 @@ const Register = () => {
     const result = await sendRequest(process, userInfo);
 
     console.log("result", result);
-    localStorage.setItem("tokenKey", result.accessToken);
-    localStorage.setItem("currentUser", result.userId);
-    localStorage.setItem("username", username);
+    if (result.message != "username already in use") {
+      console.log("result", result);
+      localStorage.setItem("tokenKey", result.accessToken);
+      localStorage.setItem("currentUser", result.userId);
+      localStorage.setItem("username", username);
 
-    setUsername("");
-    setPassword("");
+      setUsername("");
+      setPassword("");
 
-    //it will redirect to auth page again.
-    history("/auth");
+      //it will redirect to auth page again.
+      history("/user/" + localStorage.getItem("currentUser"));
+    } else {
+      history("/register");
+    }
   };
 
   return (
