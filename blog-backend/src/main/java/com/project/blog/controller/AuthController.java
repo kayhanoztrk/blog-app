@@ -73,13 +73,11 @@ public class AuthController {
         if (userService.findByUsername(request.getUsername()) != null) {
             authResponse.setMessage("username already in use");
         } else {
-
-            logger.info("bu kez else'e girdi {}");
             UserCreateRequest createRequest = new UserCreateRequest();
             createRequest.setUsername(request.getUsername());
             createRequest.setPassword(passwordEncoder.encode(request.getPassword()));
             createRequest.setRole(Role.USER);
-            userService.createUser(createRequest);
+            UserResponse response = userService.createUser(createRequest);
 
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
@@ -88,7 +86,7 @@ public class AuthController {
             String jwtToken = jwtTokenProvider.generateJwtToken(auth);
             logger.info("jwtToken info [}", jwtToken);
             authResponse.setAccessToken("Bearer " + jwtToken);
-            //authResponse.setUserId(createRequest.getId());
+            authResponse.setUserId(response.getId());
             authResponse.setMessage("user has been created successfully");
         }
         logger.info("authResponseGetMessage" + authResponse.getMessage());

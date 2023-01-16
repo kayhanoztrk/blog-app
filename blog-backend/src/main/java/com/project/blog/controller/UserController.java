@@ -5,7 +5,8 @@ import com.project.blog.model.request.UserCreateRequest;
 import com.project.blog.model.request.UserUpdateRequest;
 import com.project.blog.model.response.UserResponse;
 import com.project.blog.service.UserService;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final Logger logger = LogManager.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService) {

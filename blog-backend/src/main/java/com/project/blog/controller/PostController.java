@@ -36,10 +36,6 @@ public class PostController {
         List<Post> postList = postService.findAll();
         return ResponseEntity.ok(postList);
     }
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello(){
-        return ResponseEntity.ok("deneme hello!!!!");
-    }
     @GetMapping("/published")
     public ResponseEntity<List<PostResponse>> findAllPublished() {
         List<PostResponse> postList = postService.findAllPublished();

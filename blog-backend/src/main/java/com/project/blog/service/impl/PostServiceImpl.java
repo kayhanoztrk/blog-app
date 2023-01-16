@@ -14,8 +14,9 @@ import com.project.blog.model.response.UserResponse;
 import com.project.blog.repository.PostRepository;
 import com.project.blog.service.PostService;
 import com.project.blog.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImpl implements PostService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(PostServiceImpl.class);
 
     private final PostRepository postRepository;
     private final UserService userService;
@@ -58,7 +59,6 @@ public class PostServiceImpl implements PostService {
     @Override
     @CacheEvict(value = "postList", allEntries = true)
     public PostResponse createPost(PostCreateRequest postCreateRequest) throws IOException {
-        logger.info("create post {}");
         UserResponse userResponse = userService.findById(postCreateRequest.getUserId());
         User user = userDtoMapper.convertRespToEntity(userResponse);
         User toSaveUser = Optional.ofNullable(user)
@@ -106,6 +106,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @CachePut(value = "post", key = "#postId")
+    @CacheEvict(value = "publishedPost", allEntries = true)
     public PostResponse updatePostById(Long postId,
                                        PostUpdateRequest request) {
         Post toPost = postRepository.findById(postId)
