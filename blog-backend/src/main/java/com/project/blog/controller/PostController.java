@@ -5,7 +5,8 @@ import com.project.blog.model.request.PostCreateRequest;
 import com.project.blog.model.request.PostUpdateRequest;
 import com.project.blog.model.response.PostResponse;
 import com.project.blog.service.PostService;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ import java.util.List;
 @RequestMapping("/api/v1/post")
 public class PostController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PostController.class);
+    private static final Logger logger = LogManager.getLogger(PostController.class);
 
     private final PostService postService;
 

@@ -9,7 +9,7 @@ Configuration:
 
     RollingFile:
       - name: LogToRollingFile
-        fileName: logs/app.log
+        fileName: /Users/kayhanozturk/Desktop/kayhan.log
         filePattern: "logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
         PatternLayout:
           pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
@@ -22,7 +22,7 @@ Configuration:
   Loggers:
     logger:
       - name: com.blogapp
-        level: debug
+        level: info
         additivity: false
         AppenderRef:
           - ref: LogToConsole

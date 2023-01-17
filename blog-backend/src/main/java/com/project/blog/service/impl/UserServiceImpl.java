@@ -8,7 +8,8 @@ import com.project.blog.model.request.UserUpdateRequest;
 import com.project.blog.model.response.UserResponse;
 import com.project.blog.repository.UserRepository;
 import com.project.blog.service.UserService;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
 
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;

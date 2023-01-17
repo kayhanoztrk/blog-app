@@ -3,7 +3,8 @@ package com.project.blog.controller;
 import com.project.blog.model.request.CommentCreateRequest;
 import com.project.blog.model.response.CommentResponse;
 import com.project.blog.service.CommentService;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequestMapping("/api/v1/comment")
 public class CommentController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
+    private static final Logger logger = LogManager.getLogger(CommentController.class);
     private final CommentService commentService;
 
     public CommentController(CommentService commentService) {

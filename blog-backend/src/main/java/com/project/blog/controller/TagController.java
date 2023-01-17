@@ -5,7 +5,8 @@ import com.project.blog.model.request.TagCreateRequest;
 import com.project.blog.model.response.TagResponse;
 import com.project.blog.service.TagService;
 import com.project.blog.service.impl.TagServiceImpl;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ import java.util.List;
 @RequestMapping("/api/v1/tag")
 public class TagController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TagController.class);
+    private static final Logger logger = LogManager.getLogger(TagController.class);
     private final TagService tagService;
 
     public TagController(TagService tagService) {

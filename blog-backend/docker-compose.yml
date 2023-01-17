@@ -1,0 +1,35 @@
+version: "3"
+services:
+  some-mysql:
+    image: mysql:8.0.29
+    ports:
+      - 3306:3306
+    volumes:
+      - verilerim:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=blog_app
+      - MYSQL_ROOT_USER=root
+      - MYSQL_PASSWORD=root
+    networks:
+      - spring-boot-network
+  springboot-docker-container:
+    build: .
+    restart: always
+    ports:
+      - 8082:8082
+    depends_on:
+      - some-mysql
+    networks:
+      - spring-boot-network
+  redis:
+    image: "redis:alpine"
+    hostname: redis
+    ports:
+        - "6379:6379"
+    networks:
+      - spring-boot-network
+volumes:
+  verilerim:
+networks:
+  spring-boot-network:

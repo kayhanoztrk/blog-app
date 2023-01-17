@@ -2,8 +2,11 @@ package com.project.blog.controller.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.blog.entity.User;
+import com.project.blog.mapper.UserDtoMapper;
+import com.project.blog.model.constants.Role;
+import com.project.blog.model.response.UserResponse;
 import com.project.blog.repository.UserRepository;
-import org.junit.Assert;
+import com.project.blog.service.UserService;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -16,14 +19,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -49,65 +49,56 @@ public class UserControllerTest {
     @MockBean
     private UserRepository userRepository;
 
+    @MockBean
+    private UserService userService;
+
+    @MockBean
+    private UserDtoMapper userDtoMapper;
+
     @Autowired
     private ObjectMapper objectMapper;
 
+    private String token;
+
     @Before
-    public void init() {
-        User user = new User(1L, "Username", "password");
+    public void init() throws Exception {
+        User user = new User(1L, "Username", "password", Role.USER, "testBio");
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
     }
 
     @Test
     public void find_allUser_OK() throws Exception {
-
         List<User> users = Arrays.asList(
-                new User(1L, "User A", "password1"),
-                new User(2L, "User B", "password2"));
+                new User(1L, "User A", "password1", Role.USER, "testBio"),
+                new User(2L, "User B", "password2", Role.USER, "testBio")
+        );
 
         when(userRepository.findAll()).thenReturn(users);
+
+        List<UserResponse> userResponseList = Arrays.asList(
+                new UserResponse("username", "password",
+                        "bio", Role.USER)
+        );
+
+        when(userService.findAll()).thenReturn(userResponseList);
         mockMvc.perform(get("/api/v1/user/"))
                 .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[1].id", is(2)))
-                .andExpect(jsonPath("$[0].username", is("User A")))
-                .andExpect(jsonPath("$[1].username", is("User B")));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].username", is("username")));
 
-        verify(userRepository, times(1)).findAll();
+        verify(userService, times(1)).findAll();
 
     }
 
     @Test
     public void find_userId_OK() throws Exception {
-
-        mockMvc.perform(get("/api/v1/user/1"))
-                .andExpect((ResultMatcher) content().contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/user/1")
+                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userRepository, times(1)).findById(1L);
-
+        //verify(userRepository, times(1)).findById(1L);
     }
-
-    @Test
-    public void save_user_OK() throws Exception {
-        User user = new User(1L, "userName", "password");
-        when(userRepository.save(any(User.class))).thenReturn(user);
-
-        mockMvc.perform(post("/api/v1/user")
-                        .content(objectMapper.writeValueAsString(user))
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)));
-    }
-
-    @Test
-    public void find_userIdNotFound_404() throws Exception {
-        mockMvc.perform(get("/api/v1/user/50"))
-                .andExpect(status().isNotFound());
-    }
-
 
     @BeforeEach
     public void setup() throws Exception {

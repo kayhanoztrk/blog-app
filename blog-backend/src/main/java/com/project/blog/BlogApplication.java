@@ -1,6 +1,9 @@
 package com.project.blog;
 
+import com.project.blog.entity.Post;
 import com.project.blog.entity.User;
+import com.project.blog.model.constants.Role;
+import com.project.blog.repository.PostRepository;
 import com.project.blog.repository.UserRepository;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -18,8 +21,12 @@ public class BlogApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;
 
-    public BlogApplication(UserRepository userRepository) {
+    private final PostRepository postRepository;
+
+    public BlogApplication(UserRepository userRepository,
+                           PostRepository postRepository) {
         this.userRepository = userRepository;
+        this.postRepository = postRepository;
     }
 
     public static void main(String[] args) {
@@ -42,6 +49,8 @@ public class BlogApplication implements CommandLineRunner {
         User user = new User();
         user.setUsername("username");
         user.setPassword("password");
+        user.setRole(Role.USER);
+        user.setBio("testBio");
 
         userRepository.save(user);
     }

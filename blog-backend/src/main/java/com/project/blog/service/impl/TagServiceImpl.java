@@ -7,8 +7,8 @@ import com.project.blog.model.request.TagCreateRequest;
 import com.project.blog.model.response.TagResponse;
 import com.project.blog.repository.TagRepository;
 import com.project.blog.service.TagService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class TagServiceImpl implements TagService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(TagServiceImpl.class);
     private final TagDtoMapper tagDtoMapper;
     private final TagRepository tagRepository;
 

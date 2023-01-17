@@ -8,7 +8,8 @@ import com.project.blog.model.response.AuthResponse;
 import com.project.blog.model.response.UserResponse;
 import com.project.blog.security.JwtTokenProvider;
 import com.project.blog.service.UserService;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final Logger logger = LogManager.getLogger(AuthController.class);
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
@@ -61,8 +62,6 @@ public class AuthController {
         authResponse.setAccessToken("Bearer " + jwtToken);
         authResponse.setUserId(user.getId());
 
-        logger.info("authMessage" + authResponse.getMessage());
-
         return ResponseEntity.ok(authResponse);
     }
 
@@ -84,7 +83,6 @@ public class AuthController {
             Authentication auth = authenticationManager.authenticate(authenticationToken);
             SecurityContextHolder.getContext().setAuthentication(auth);
             String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-            logger.info("jwtToken info [}", jwtToken);
             authResponse.setAccessToken("Bearer " + jwtToken);
             authResponse.setUserId(response.getId());
             authResponse.setMessage("user has been created successfully");
