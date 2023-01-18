@@ -26,7 +26,7 @@ const User = () => {
 
   useEffect(() => {
     getUser();
-    setIsOwner(localStorage.getItem("currentUser") == userId);
+    setIsOwner(localStorage.getItem("currentUser") === userId);
   }, []);
 
   return (

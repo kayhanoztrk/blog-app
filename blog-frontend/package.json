@@ -44,7 +44,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8082",
+  "proxy": "http://springboot-docker-container:8082",
   "devDependencies": {
     "react-router-dom": "^6.6.2"
   }

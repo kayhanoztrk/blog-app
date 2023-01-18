@@ -14,7 +14,7 @@ services:
     networks:
       - spring-boot-network
   springboot-docker-container:
-    build: .
+    build: ./blog-backend
     restart: always
     ports:
       - 8082:8082
@@ -24,10 +24,9 @@ services:
       - spring-boot-network
   frontend:
     image: react_frontend
-    build:
-      context: ../blog-frontend/
+    build: ./blog-frontend
     ports:
-      - "8080:8080"
+      - "3000:3000"
     networks:
       - spring-boot-network
     depends_on:
