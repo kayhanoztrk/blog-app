@@ -112,7 +112,7 @@ public class PostControllerTest {
 
     @Test
     public void save_post_OK() throws Exception {
-     /*   UserResponse userResponse = UserResponse.builder()
+      UserResponse userResponse = UserResponse.builder()
                         .id(1L)
                                 .username("username")
                                         .bio("testbio")
@@ -151,7 +151,6 @@ public class PostControllerTest {
                         .header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
-   */
     }
 
     @Test
