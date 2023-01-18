@@ -36,9 +36,12 @@ services:
     hostname: redis
     ports:
         - "6379:6379"
+    volumes:
+        - redis_data:/data    
     networks:
       - spring-boot-network
 volumes:
   my-datavolume:
+  redis_data:
 networks:
   spring-boot-network:
