@@ -5,7 +5,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - verilerim:/var/lib/mysql
+      - my-datavolume:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=blog_app
@@ -39,6 +39,6 @@ services:
     networks:
       - spring-boot-network
 volumes:
-  verilerim:
+  my-datavolume:
 networks:
   spring-boot-network:
