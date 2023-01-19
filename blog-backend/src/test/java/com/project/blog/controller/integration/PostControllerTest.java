@@ -7,6 +7,7 @@ package com.project.blog.controller.integration;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.blog.controller.PostController;
 import com.project.blog.entity.Post;
 import com.project.blog.entity.Tag;
 import com.project.blog.entity.User;
@@ -21,7 +22,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -36,6 +40,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.junit.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -55,18 +60,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  * @since 0.1
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-@TestPropertySource(locations="classpath:application-test.properties")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc //need this in Spring Boot test
 public class PostControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private PostRepository postRepository;
 
-    @MockBean
+    @Mock
     private UserService userService;
 
     @Autowired
@@ -76,6 +79,7 @@ public class PostControllerTest {
 
     @Before
     public void init() {
+        MockitoAnnotations.initMocks(this);
         User user = new User(1L,"testusername","testpassword", Role.USER,"testbio");
         post = Post.builder().id(1L).text("text").user(user).build();
 

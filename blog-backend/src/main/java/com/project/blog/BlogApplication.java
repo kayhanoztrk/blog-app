@@ -17,7 +17,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages = "com.project.blog.*")
 @EnableCaching
-public class BlogApplication implements CommandLineRunner {
+public class BlogApplication implements CommandLineRunner
+{
 
     private final UserRepository userRepository;
 

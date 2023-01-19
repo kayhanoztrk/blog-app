@@ -6,6 +6,8 @@ import com.project.blog.mapper.PostDtoMapper;
 import com.project.blog.mapper.UserDtoMapper;
 import com.project.blog.model.constants.Role;
 import com.project.blog.model.request.PostCreateRequest;
+import com.project.blog.model.request.PostUpdateRequest;
+import com.project.blog.model.response.PostCommentedResponse;
 import com.project.blog.model.response.PostResponse;
 import com.project.blog.model.response.UserResponse;
 import com.project.blog.repository.PostRepository;
@@ -16,6 +18,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -33,6 +37,7 @@ import static org.mockito.Mockito.*;
  * @version 0.1
  * @since 0.1
  */
+@ActiveProfiles("test")
 public class PostServiceTest {
 
     private PostService postService;
@@ -151,7 +156,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testFindById(){
+    public void testFindById() {
         when(postRepository.findById(any(Long.class))).thenReturn(Optional.of(post));
         when(postDtoMapper.convertEntityToResponse(any(Post.class)))
                 .thenReturn(postResponse);
@@ -166,7 +171,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testFindTagNotExistsPostByPostId(){
+    public void testFindTagNotExistsPostByPostId() {
         when(postRepository.findTagNotExistsPostByPostId(any(Long.class)))
                 .thenReturn(post);
         when(postDtoMapper.convertEntityToResponse(any(Post.class)))
@@ -181,7 +186,7 @@ public class PostServiceTest {
     }
 
     @Test
-    public void testFindAllPostByUserId(){
+    public void testFindAllPostByUserId() {
         when(postRepository.findByUserId(any(Long.class)))
                 .thenReturn(postList);
         when(postDtoMapper.convertEntityToResponse(any(Post.class)))
@@ -199,4 +204,70 @@ public class PostServiceTest {
 
     }
 
+    @Test
+    public void testFindMostCommented() {
+        PostCommentedResponse postCommentedResponse = new PostCommentedResponse();
+        postCommentedResponse.setId(1L);
+        postCommentedResponse.setTitle("title");
+        postCommentedResponse.setText("text");
+        postCommentedResponse.setIsPublished(false);
+        postCommentedResponse.setNum_comments(4L);
+
+        when(postRepository.findCommentedPost(any(Long.class)))
+                .thenReturn(Arrays.asList(postCommentedResponse));
+        when(postDtoMapper.convertEntityToResponse(any(Post.class)))
+                .thenReturn(postResponse);
+
+        List<PostResponse> postResponseList = Arrays.asList(postResponse);
+
+        List<PostResponse> responseList = postService.findMostCommented(1L);
+
+        Assert.assertNotNull(responseList);
+        Assert.assertEquals(postResponseList, responseList);
+
+        verify(postRepository, times(1)).findCommentedPost(any(Long.class));
+        verify(postDtoMapper, times(1)).convertEntityToResponse(any(Post.class));
+    }
+
+    @Test
+    public void testDeleteByPostId() {
+        doNothing().when(postRepository).deleteById(any(Long.class));
+        postService.deleteByPostId(1L);
+    }
+
+    @Test
+    public void testFindAllDraftOrPublishedPost() {
+        when(postRepository.findAllDraftOrPublishedPost(any(Boolean.class),
+                any(Long.class))).thenReturn(Arrays.asList(post));
+
+        when(postDtoMapper.convertEntityToResponse(any(Post.class)))
+                .thenReturn(postResponse);
+
+        List<PostResponse> postResponses = postService.findAllDraftOrPublishedPost(true, 1L);
+
+        Assert.assertNotNull(postResponses);
+
+        verify(postRepository, times(1)).findAllDraftOrPublishedPost(any(Boolean.class),
+                any(Long.class));
+        verify(postDtoMapper, times(1)).convertEntityToResponse(any(Post.class));
+    }
+
+    @Test
+    public void updatePostById() {
+        when(postRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(post));
+        when(postRepository.save(any(Post.class)))
+                .thenReturn(post);
+        when(postDtoMapper.convertEntityToResponse(any(Post.class)))
+                .thenReturn(postResponse);
+
+        PostResponse response = postService.updatePostById(1L, new PostUpdateRequest());
+
+        Assert.assertNotNull(response);
+        Assert.assertEquals(postResponse, response);
+
+        verify(postRepository, times(1)).findById(any(Long.class));
+        verify(postRepository, times(1)).save(any(Post.class));
+        verify(postDtoMapper, times(1)).convertEntityToResponse(any(Post.class));
+    }
 }

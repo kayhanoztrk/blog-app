@@ -38,10 +38,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  * @version 0.1
  * @since 0.1
  */
+/**
+ * @author Kayhan Öztürk
+ * @version 0.1
+ * @since 0.1
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
